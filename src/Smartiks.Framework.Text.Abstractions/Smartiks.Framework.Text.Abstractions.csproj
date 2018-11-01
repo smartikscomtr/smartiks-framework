@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>

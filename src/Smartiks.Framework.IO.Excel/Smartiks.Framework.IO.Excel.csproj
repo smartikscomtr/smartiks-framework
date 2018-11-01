@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Murat Atay</Authors>
+    <Product>Smartiks.Framework.IO.Excel</Product>
+    <Description>Smartiks.Framework.IO.Excel</Description>
+    <Company>Smartiks</Company>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.2.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smartiks.Framework.IO.Excel.Abstractions\Smartiks.Framework.IO.Excel.Abstractions.csproj" />
+    <ProjectReference Include="..\Smartiks.Framework.Text.Abstractions\Smartiks.Framework.Text.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

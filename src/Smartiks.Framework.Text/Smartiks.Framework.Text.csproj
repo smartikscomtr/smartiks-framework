@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mustache" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smartiks.Framework.Text.Abstractions\Smartiks.Framework.Text.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
