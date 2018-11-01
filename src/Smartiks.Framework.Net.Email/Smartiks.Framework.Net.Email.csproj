@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Smartiks.Framework.Net.Email.Abstractions\Smartiks.Framework.Net.Email.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
