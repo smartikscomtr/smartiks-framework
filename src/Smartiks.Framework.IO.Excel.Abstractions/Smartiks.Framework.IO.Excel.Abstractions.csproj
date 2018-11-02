@@ -8,6 +8,7 @@
     <Description>Smartiks.Framework.IO.Excel.Abstractions</Description>
     <Product>Smartiks.Framework.IO.Excel.Abstractions</Product>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
 </Project>

@@ -7,9 +7,9 @@
     <Product>Smartiks.Framework.IO.Excel</Product>
     <Description>Smartiks.Framework.IO.Excel</Description>
     <Company>Smartiks</Company>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.2.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
   </PropertyGroup>
 

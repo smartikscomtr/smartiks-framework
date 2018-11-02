@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using Smartiks.Framework.IO.Excel.Abstractions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Smartiks.Framework.IO.Excel.Abstractions;
 
 namespace Smartiks.Framework.IO.Excel.Extensions
 {
@@ -20,10 +18,9 @@ namespace Smartiks.Framework.IO.Excel.Extensions
                     .AsReadOnly();
         }
 
-        public static void Write<T>(this IExcelDocumentService excelDocumentService, Stream excelStream, string worksheetName, IEnumerable items, IFormatProvider formatProvider)
+        public static void Write<T>(this IExcelDocumentService excelDocumentService, Stream excelStream, string worksheetName, IEnumerable<T> items, CultureInfo cultureInfo)
         {
-            excelDocumentService
-                .Write(excelStream, worksheetName, typeof(T), items, formatProvider);
+            excelDocumentService.Write(excelStream, worksheetName, typeof(T), items, cultureInfo);
         }
     }
 }
