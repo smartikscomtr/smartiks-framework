@@ -7,12 +7,12 @@ namespace Smartiks.Framework.Text
     {
         public IConvertible FromString(string value, Type targetType, IFormatProvider formatProvider)
         {
-            return (IConvertible)Convert.ChangeType(value, targetType, formatProvider);
+            return (IConvertible) Convert.ChangeType(value, targetType, formatProvider);
         }
 
         public string ToString(IConvertible value, IFormatProvider formatProvider)
         {
-            return (string)Convert.ChangeType(value, typeof(string), formatProvider);
+            return (string) Convert.ChangeType(value, typeof(string), formatProvider);
         }
     }
 }
