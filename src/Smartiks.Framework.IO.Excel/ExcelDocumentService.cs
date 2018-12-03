@@ -123,7 +123,7 @@ namespace Smartiks.Framework.IO.Excel
             }
         }
 
-        public void Write(Stream excelStream, string worksheetName, Type type, IEnumerable items, IFormatProvider formatProvider)
+        public void Write(Stream excelStream, string worksheetName, Type type, IEnumerable items, CultureInfo cultureInfo)
         {
             using (var package = new ExcelPackage(excelStream))
             {
@@ -142,7 +142,8 @@ namespace Smartiks.Framework.IO.Excel
                             {
                                 Meta = p,
                                 DisplayName = displayAttribute?.GetName() ?? p.Name,
-                                Order = displayAttribute?.GetOrder() ?? int.MaxValue
+                                Order = displayAttribute?.GetOrder() ?? int.MaxValue,
+                                UnderlyingType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType
                             };
                         })
                         .OrderBy(p => p.Order)
@@ -170,6 +171,11 @@ namespace Smartiks.Framework.IO.Excel
                         var cell = worksheet.Cells[rowNo, columnNo];
 
                         cell.Value = property.Meta.GetValue(item);
+
+                        if (property.UnderlyingType == typeof(DateTime) || property.UnderlyingType == typeof(DateTimeOffset))
+                        {
+                            cell.Style.Numberformat.Format = $"{cultureInfo.DateTimeFormat.ShortDatePattern} {cultureInfo.DateTimeFormat.ShortTimePattern}";
+                        }
 
                         columnNo++;
                     }

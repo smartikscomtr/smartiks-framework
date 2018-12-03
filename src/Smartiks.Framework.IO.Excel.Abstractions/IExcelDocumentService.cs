@@ -12,6 +12,6 @@ namespace Smartiks.Framework.IO.Excel.Abstractions
 
         IReadOnlyCollection<object> Read(Stream excelStream, string worksheetName, Type type, CultureInfo cultureInfo);
 
-        void Write(Stream excelStream, string worksheetName, Type type, IEnumerable items, IFormatProvider formatProvider);
+        void Write(Stream excelStream, string worksheetName, Type type, IEnumerable items, CultureInfo cultureInfo);
     }
 }
