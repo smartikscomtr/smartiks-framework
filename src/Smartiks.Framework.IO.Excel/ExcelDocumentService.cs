@@ -14,11 +14,11 @@ namespace Smartiks.Framework.IO.Excel
 {
     public class ExcelDocumentService : IExcelDocumentService
     {
-        private readonly IStringConverterService _stringConverterService;
+        private readonly IStringConverterService stringConverterService;
 
         public ExcelDocumentService(IStringConverterService stringConverterService)
         {
-            _stringConverterService = stringConverterService;
+            this.stringConverterService = stringConverterService;
         }
 
         public IReadOnlyCollection<string> GetWorksheetNames(Stream excelStream)
@@ -43,8 +43,7 @@ namespace Smartiks.Framework.IO.Excel
                     properties
                         .ToDictionary
                         (
-                            p =>
-                            {
+                            p => {
                                 var displayAttribute = p.GetCustomAttribute<DisplayAttribute>();
 
                                 return displayAttribute?.GetName() ?? p.Name;
@@ -100,7 +99,7 @@ namespace Smartiks.Framework.IO.Excel
 
                         try
                         {
-                            value = ChangeType(cell.Text, propertyType, cultureInfo);
+                            value = stringConverterService.FromString(cell.Text, propertyType, cultureInfo);
                         }
                         catch (FormatException ex)
                         {
@@ -134,12 +133,10 @@ namespace Smartiks.Framework.IO.Excel
                 var properties =
                     type
                         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Select(p =>
-                        {
+                        .Select(p => {
                             var displayAttribute = p.GetCustomAttribute<DisplayAttribute>();
 
-                            return new
-                            {
+                            return new {
                                 Meta = p,
                                 DisplayName = displayAttribute?.GetName() ?? p.Name,
                                 Order = displayAttribute?.GetOrder() ?? int.MaxValue,
@@ -185,14 +182,6 @@ namespace Smartiks.Framework.IO.Excel
 
                 package.Save();
             }
-        }
-
-        private object ChangeType(string value, Type targetType, IFormatProvider formatProvider)
-        {
-            return
-                _stringConverterService != null
-                    ? _stringConverterService.FromString(value, targetType, formatProvider)
-                    : Convert.ChangeType(value, targetType, formatProvider);
         }
     }
 }
