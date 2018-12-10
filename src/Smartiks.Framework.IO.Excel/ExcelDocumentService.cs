@@ -1,7 +1,4 @@
-﻿using OfficeOpenXml;
-using Smartiks.Framework.IO.Excel.Abstractions;
-using Smartiks.Framework.Text.Abstractions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,31 +6,27 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using OfficeOpenXml;
+using Smartiks.Framework.IO.Excel.Abstractions;
 
 namespace Smartiks.Framework.IO.Excel
 {
     public class ExcelDocumentService : IExcelDocumentService
     {
-        private readonly IStringConverterService stringConverterService;
-
-        public ExcelDocumentService(IStringConverterService stringConverterService)
+        public Task<IList<string>> GetWorksheetNamesAsync(Stream stream)
         {
-            this.stringConverterService = stringConverterService;
-        }
-
-        public IReadOnlyCollection<string> GetWorksheetNames(Stream excelStream)
-        {
-            using (var package = new ExcelPackage(excelStream))
+            using (var package = new ExcelPackage(stream))
             {
                 package.Compatibility.IsWorksheets1Based = true;
 
-                return package.Workbook.Worksheets.Select(w => w.Name).ToList().AsReadOnly();
+                return Task.FromResult<IList<string>>(package.Workbook.Worksheets.Select(w => w.Name).ToArray());
             }
         }
 
-        public IReadOnlyCollection<object> Read(Stream excelStream, string worksheetName, Type type, CultureInfo cultureInfo)
+        public Task<IList> ReadAsync(Stream stream, string worksheetName, Type type, CultureInfo cultureInfo)
         {
-            using (var package = new ExcelPackage(excelStream))
+            using (var package = new ExcelPackage(stream))
             {
                 package.Compatibility.IsWorksheets1Based = true;
 
@@ -44,6 +37,7 @@ namespace Smartiks.Framework.IO.Excel
                         .ToDictionary
                         (
                             p => {
+
                                 var displayAttribute = p.GetCustomAttribute<DisplayAttribute>();
 
                                 return displayAttribute?.GetName() ?? p.Name;
@@ -64,10 +58,11 @@ namespace Smartiks.Framework.IO.Excel
                 {
                     var cell = worksheet.Cells[1, columnNo];
 
-                    if (string.IsNullOrWhiteSpace(cell.Text))
+                    if (cell.Value == null || !(cell.Value is string stringValue) || string.IsNullOrWhiteSpace(stringValue))
                         continue;
 
-                    if (!propertiesByName.TryGetValue(cell.Text, out var property))
+
+                    if (!propertiesByName.TryGetValue(stringValue, out var property))
                         throw new ExcelInvalidHeaderNameException(1, columnNo, cell.Address);
 
                     columnNoAndPropertyMaps.Add(columnNo, property);
@@ -76,7 +71,7 @@ namespace Smartiks.Framework.IO.Excel
                 if (columnNoAndPropertyMaps.Count == 0)
                     throw new ExcelWorksheetEmptyException();
 
-                var items = new List<object>();
+                var items = new ArrayList();
 
                 for (var rowNo = 2; rowNo <= worksheetDimension.Rows; rowNo++)
                 {
@@ -88,7 +83,7 @@ namespace Smartiks.Framework.IO.Excel
                     {
                         var cell = worksheet.Cells[rowNo, columnNoAndPropertyMap.Key];
 
-                        if (string.IsNullOrWhiteSpace(cell.Text))
+                        if (cell.Value == null)
                             continue;
 
                         var propertyType =
@@ -99,7 +94,15 @@ namespace Smartiks.Framework.IO.Excel
 
                         try
                         {
-                            value = stringConverterService.FromString(cell.Text, propertyType, cultureInfo);
+                            value = Convert.ChangeType(cell.Value, propertyType, cultureInfo);
+                        }
+                        catch (InvalidCastException) when (propertyType == typeof(DateTime) && cell.Value is double doubleValue)
+                        {
+                            value = DateTime.FromOADate(doubleValue);
+                        }
+                        catch (InvalidCastException ex)
+                        {
+                            throw new ExcelInvalidCellValueException(rowNo, columnNoAndPropertyMap.Key, cell.Address, columnNoAndPropertyMap.Value.Name, ex);
                         }
                         catch (FormatException ex)
                         {
@@ -118,13 +121,13 @@ namespace Smartiks.Framework.IO.Excel
                     }
                 }
 
-                return items.AsReadOnly();
+                return Task.FromResult<IList>(items);
             }
         }
 
-        public void Write(Stream excelStream, string worksheetName, Type type, IEnumerable items, CultureInfo cultureInfo)
+        public Task WriteAsync(Stream stream, string worksheetName, IEnumerable items, Type type, CultureInfo cultureInfo)
         {
-            using (var package = new ExcelPackage(excelStream))
+            using (var package = new ExcelPackage(stream))
             {
                 package.Compatibility.IsWorksheets1Based = true;
 
@@ -134,16 +137,20 @@ namespace Smartiks.Framework.IO.Excel
                     type
                         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                         .Select(p => {
+
                             var displayAttribute = p.GetCustomAttribute<DisplayAttribute>();
+
+                            var displayFormatAttribute = p.GetCustomAttribute<DisplayFormatAttribute>();
 
                             return new {
                                 Meta = p,
+                                UnderlyingType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType,
                                 DisplayName = displayAttribute?.GetName() ?? p.Name,
-                                Order = displayAttribute?.GetOrder() ?? int.MaxValue,
-                                UnderlyingType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType
+                                DisplayOrder = displayAttribute?.GetOrder() ?? int.MaxValue,
+                                DisplayFormat = displayFormatAttribute?.DataFormatString
                             };
                         })
-                        .OrderBy(p => p.Order)
+                        .OrderBy(p => p.DisplayOrder)
                         .ToArray();
 
                 var columnNo = 1;
@@ -169,9 +176,9 @@ namespace Smartiks.Framework.IO.Excel
 
                         cell.Value = property.Meta.GetValue(item);
 
-                        if (property.UnderlyingType == typeof(DateTime) || property.UnderlyingType == typeof(DateTimeOffset))
+                        if (!string.IsNullOrWhiteSpace(property.DisplayFormat))
                         {
-                            cell.Style.Numberformat.Format = $"{cultureInfo.DateTimeFormat.ShortDatePattern} {cultureInfo.DateTimeFormat.ShortTimePattern}";
+                            cell.Style.Numberformat.Format = property.DisplayFormat;
                         }
 
                         columnNo++;
@@ -182,6 +189,8 @@ namespace Smartiks.Framework.IO.Excel
 
                 package.Save();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

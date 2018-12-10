@@ -5,55 +5,59 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Smartiks.Framework.IO.Excel.Extensions
 {
     public static class ExcelDocumentServiceExtensions
     {
-        public static IReadOnlyCollection<T> Read<T>(this IExcelDocumentService excelDocumentService, Stream excelStream, string worksheetName, CultureInfo cultureInfo)
+        public static async Task<IList<string>> GetWorksheetNamesAsync(this IExcelDocumentService excelDocumentService, string filePath)
         {
-            return
-                excelDocumentService
-                    .Read(excelStream, worksheetName, typeof(T), cultureInfo)
-                    .Cast<T>()
-                    .ToList()
-                    .AsReadOnly();
-        }
-
-        public static IReadOnlyCollection<object> Read(this IExcelDocumentService excelDocumentService, string excelFilePath, string worksheetName, Type type, CultureInfo cultureInfo)
-        {
-            using (var excelFileStream = File.Open(excelFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                return excelDocumentService.Read(excelFileStream, worksheetName, type, cultureInfo);
+                return await excelDocumentService.GetWorksheetNamesAsync(stream);
             }
         }
 
-        public static IReadOnlyCollection<T> Read<T>(this IExcelDocumentService excelDocumentService, string excelFilePath, string worksheetName, CultureInfo cultureInfo)
+        public static async Task<IList> ReadAsync(this IExcelDocumentService excelDocumentService, string filePath, string worksheetName, Type type, CultureInfo cultureInfo)
         {
-            return
-                excelDocumentService
-                    .Read(excelFilePath, worksheetName, typeof(T), cultureInfo)
-                    .Cast<T>()
-                    .ToList()
-                    .AsReadOnly();
-        }
-
-        public static void Write<T>(this IExcelDocumentService excelDocumentService, Stream excelStream, string worksheetName, IEnumerable<T> items, CultureInfo cultureInfo)
-        {
-            excelDocumentService.Write(excelStream, worksheetName, typeof(T), items, cultureInfo);
-        }
-
-        public static void Write(this IExcelDocumentService excelDocumentService, string excelFilePath, string worksheetName, Type type, IEnumerable items, CultureInfo cultureInfo)
-        {
-            using (var excelFileStream = File.Open(excelFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            using (var excelStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                excelDocumentService.Write(excelFileStream, worksheetName, type, items, cultureInfo);
+                return await excelDocumentService.ReadAsync(excelStream, worksheetName, type, cultureInfo);
             }
         }
 
-        public static void Write<T>(this IExcelDocumentService excelDocumentService, string excelFilePath, string worksheetName, IEnumerable<T> items, CultureInfo cultureInfo)
+        public static async Task<IList<T>> ReadAsync<T>(this IExcelDocumentService excelDocumentService, Stream stream, string worksheetName, CultureInfo cultureInfo)
         {
-            excelDocumentService.Write(excelFilePath, worksheetName, typeof(T), items, cultureInfo);
+            var result = await excelDocumentService.ReadAsync(stream, worksheetName, typeof(T), cultureInfo);
+
+            return result.Cast<T>().ToArray();
+        }
+
+        public static async Task<IList<T>> ReadAsync<T>(this IExcelDocumentService excelDocumentService, string filePath, string worksheetName, CultureInfo cultureInfo)
+        {
+            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                return await excelDocumentService.ReadAsync<T>(stream, worksheetName, cultureInfo);
+            }
+        }
+
+        public static async Task WriteAsync(this IExcelDocumentService excelDocumentService, string filePath, string worksheetName, IEnumerable items, Type type, CultureInfo cultureInfo)
+        {
+            using (var stream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                await excelDocumentService.WriteAsync(stream, worksheetName, items, type, cultureInfo);
+            }
+        }
+
+        public static Task WriteAsync<T>(this IExcelDocumentService excelDocumentService, Stream stream, string worksheetName, IEnumerable<T> items, CultureInfo cultureInfo)
+        {
+            return excelDocumentService.WriteAsync(stream, worksheetName, items, typeof(T), cultureInfo);
+        }
+
+        public static Task WriteAsync<T>(this IExcelDocumentService excelDocumentService, string filePath, string worksheetName, IEnumerable<T> items, CultureInfo cultureInfo)
+        {
+            return excelDocumentService.WriteAsync(filePath, worksheetName, items, typeof(T), cultureInfo);
         }
     }
 }
