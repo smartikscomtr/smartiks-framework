@@ -1,0 +1,1 @@
+﻿<?xml version="1.0" encoding="utf-8"?><XmlModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><IntValue>1</IntValue><NullableIntValue>1</NullableIntValue><DecimalValue>1.5</DecimalValue><NullableDecimalValue>1.5</NullableDecimalValue><StringValue>Text</StringValue></XmlModel>
