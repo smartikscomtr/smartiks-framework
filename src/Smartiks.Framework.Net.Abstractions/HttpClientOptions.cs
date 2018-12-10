@@ -4,6 +4,6 @@ namespace Smartiks.Framework.Net.Abstractions
 {
     public class HttpClientOptions
     {
-        public TimeSpan TimeOut { get; set; }
+        public TimeSpan Timeout { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Smartiks.Framework.Net
         {
             Options = optionsProvider.Value;
 
-            Timeout = Options.TimeOut;
+            Timeout = Options.Timeout;
         }
     }
 }
