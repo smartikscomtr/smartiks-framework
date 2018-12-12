@@ -723,9 +723,9 @@ namespace Smartiks.Framework.Identity.Data
             #endregion
         }
 
-        public async Task<int> SaveChangesAsync()
+        public virtual Task<int> SaveChangesAsync()
         {
-            return await base.SaveChangesAsync();
+            return base.SaveChangesAsync();
         }
     }
 }
