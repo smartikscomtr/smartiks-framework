@@ -41,6 +41,38 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net.Abst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net", "src\Smartiks.Framework.Net\Smartiks.Framework.Net.csproj", "{9804A4AA-62C5-4370-8F85-6C2B68F1B777}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml.Abstractions", "src\Smartiks.Framework.IO.Xml.Abstractions\Smartiks.Framework.IO.Xml.Abstractions.csproj", "{D2F894F0-F34E-40D7-B435-825687DBDE79}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml", "src\Smartiks.Framework.IO.Xml\Smartiks.Framework.IO.Xml.csproj", "{6BC23412-0707-404C-AFB7-DB889C3F812B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml.Extensions", "src\Smartiks.Framework.IO.Xml.Extensions\Smartiks.Framework.IO.Xml.Extensions.csproj", "{31A1EB77-E501-443A-BA17-F70900642C5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml.UnitTests", "test\Smartiks.Framework.IO.Xml.UnitTests\Smartiks.Framework.IO.Xml.UnitTests.csproj", "{C7732F47-ED16-4265-A6E2-5E4CDFCF8223}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO", "src\Smartiks.Framework.IO\Smartiks.Framework.IO.csproj", "{96358782-FDB7-4387-9198-F062FFD74178}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Excel.UnitTests", "test\Smartiks.Framework.IO.Excel.UnitTests\Smartiks.Framework.IO.Excel.UnitTests.csproj", "{8A0A15BE-A3B3-443D-8D33-1A36847BD25A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Server.Extensions", "src\Smartiks.Framework.Identity.Server.Extensions\Smartiks.Framework.Identity.Server.Extensions.csproj", "{66D6B6C8-58DE-489A-8A0D-66341FC502E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Server.Abstractions", "src\Smartiks.Framework.Identity.Server.Abstractions\Smartiks.Framework.Identity.Server.Abstractions.csproj", "{2EC85483-0C7F-4D91-ABD3-B930E40476B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Server.App", "examples\Smartiks.Framework.Identity.Server.App\Smartiks.Framework.Identity.Server.App.csproj", "{FE378962-F0BF-43EA-B769-9E9E8B4EDD28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Web.Abstractions", "src\Smartiks.Framework.Identity.Authentication.Web.Abstractions\Smartiks.Framework.Identity.Authentication.Web.Abstractions.csproj", "{536FD0F2-1DB9-4726-92C2-87AD224B3A94}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Web.Extensions", "src\Smartiks.Framework.Identity.Authentication.Web.Extensions\Smartiks.Framework.Identity.Authentication.Web.Extensions.csproj", "{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.Identity.Authentication.Owin.Extensions", "src\Smartiks.Framework.Identity.Authentication.Owin.Extensions\Smartiks.Framework.Identity.Authentication.Owin.Extensions.csproj", "{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.Identity.Authentication.Owin.Abstractions", "src\Smartiks.Framework.Identity.Authentication.Owin.Abstractions\Smartiks.Framework.Identity.Authentication.Owin.Abstractions.csproj", "{1F373A7C-1C19-4DC9-858A-F4260AD0828A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Web.App", "examples\Smartiks.Framework.Identity.Authentication.Web.App\Smartiks.Framework.Identity.Authentication.Web.App.csproj", "{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.Identity.Authentication.Owin.App", "examples\Smartiks.Framework.Identity.Authentication.Owin.App\Smartiks.Framework.Identity.Authentication.Owin.App.csproj", "{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,9 +139,76 @@ Global
 		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BC23412-0707-404C-AFB7-DB889C3F812B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BC23412-0707-404C-AFB7-DB889C3F812B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BC23412-0707-404C-AFB7-DB889C3F812B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BC23412-0707-404C-AFB7-DB889C3F812B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A1EB77-E501-443A-BA17-F70900642C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A1EB77-E501-443A-BA17-F70900642C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A1EB77-E501-443A-BA17-F70900642C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A1EB77-E501-443A-BA17-F70900642C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7732F47-ED16-4265-A6E2-5E4CDFCF8223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7732F47-ED16-4265-A6E2-5E4CDFCF8223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7732F47-ED16-4265-A6E2-5E4CDFCF8223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7732F47-ED16-4265-A6E2-5E4CDFCF8223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96358782-FDB7-4387-9198-F062FFD74178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96358782-FDB7-4387-9198-F062FFD74178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96358782-FDB7-4387-9198-F062FFD74178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96358782-FDB7-4387-9198-F062FFD74178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D6B6C8-58DE-489A-8A0D-66341FC502E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D6B6C8-58DE-489A-8A0D-66341FC502E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D6B6C8-58DE-489A-8A0D-66341FC502E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D6B6C8-58DE-489A-8A0D-66341FC502E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC85483-0C7F-4D91-ABD3-B930E40476B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC85483-0C7F-4D91-ABD3-B930E40476B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC85483-0C7F-4D91-ABD3-B930E40476B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC85483-0C7F-4D91-ABD3-B930E40476B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{536FD0F2-1DB9-4726-92C2-87AD224B3A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{536FD0F2-1DB9-4726-92C2-87AD224B3A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{536FD0F2-1DB9-4726-92C2-87AD224B3A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{536FD0F2-1DB9-4726-92C2-87AD224B3A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7732F47-ED16-4265-A6E2-5E4CDFCF8223} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
+		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
+		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}
