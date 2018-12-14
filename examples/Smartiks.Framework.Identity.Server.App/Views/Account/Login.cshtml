@@ -1,0 +1,84 @@
+﻿@model Smartiks.Framework.Identity.Server.App.Models.Account.LoginViewModel
+
+<partial name="_ValidationSummary" />
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center text-white mb-4">Bootstrap 4 Login Form</h2>
+            @if (Model.EnableLocalLogin)
+            {
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="mb-0">Giriş</h3>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST" asp-route="Login" role="form" autocomplete="off" novalidate="">
+                                    <input type="hidden" asp-for="ReturnUrl" />
+                                    <div class="form-group">
+                                        <label asp-for="Username"></label>
+                                        <input asp-for="Username" type="text" class="form-control" required autofocus>
+                                        <div class="invalid-feedback">Oops, you missed this one.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Password"></label>
+                                        <input asp-for="Password" type="password" class="form-control" required autocomplete="new-password">
+                                        <div class="invalid-feedback">Enter your password too!</div>
+                                    </div>
+                                    @if (Model.AllowRememberLogin)
+                                    {
+                                        <div>
+                                            <label asp-for="RememberLogin">
+                                                <input asp-for="RememberLogin">
+                                                <span>Remember me</span>
+                                            </label>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success btn-lg" value="login">Login</button>
+                                        <button type="submit" class="btn btn-default btn-lg" value="cancel">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.VisibleExternalProviders.Any())
+            {
+                <div class="col-md-6 col-sm-6 external-providers">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">External Login</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-inline">
+                                @foreach (var provider in Model.VisibleExternalProviders)
+                                {
+                                    <li>
+                                        <a class="btn btn-default"
+                                           asp-controller="External"
+                                           asp-action="Challenge"
+                                           asp-route-provider="@provider.AuthenticationScheme"
+                                           asp-route-returnUrl="@Model.ReturnUrl">
+                                            @provider.DisplayName
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+            {
+                <div class="alert alert-warning">
+                    <strong>Invalid login request</strong>
+                    There are no login schemes configured for this client.
+                </div>
+            }
+        </div>
+    </div>
+</div>

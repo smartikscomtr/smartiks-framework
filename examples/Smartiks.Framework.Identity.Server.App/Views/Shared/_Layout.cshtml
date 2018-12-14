@@ -1,0 +1,85 @@
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - Smartiks Framework Kimlik Sunucusu</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
+    <environment include="Development">
+    </environment>
+    <environment exclude="Development">
+    </environment>
+</head>
+<body>
+
+    <div class="dropdown is-active">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span>Dropdown button</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+                <a href="#" class="dropdown-item">
+                    Dropdown item
+                </a>
+                <a class="dropdown-item">
+                    Other dropdown item
+                </a>
+                <a href="#" class="dropdown-item is-active">
+                    Active dropdown item
+                </a>
+                <a href="#" class="dropdown-item">
+                    Other dropdown item
+                </a>
+                <hr class="dropdown-divider">
+                <a href="#" class="dropdown-item">
+                    With a divider
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4 pt-1">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Smartiks Framework Identity Server</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a class="text-dark" href="#">Giriş</a>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    @if (Context.User == null)
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="Login">Giriş</a>
+                    }
+                    else
+                    {
+                        <span>@Context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).FirstOrDefault()</span>
+                        <a asp-area="" asp-controller="Account" asp-action="Logout">Çıkış</a>
+                    }
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+    </environment>
+    <environment exclude="Development">
+    </environment>
+
+    @RenderSection("Scripts", false)
+</body>
+</html>
