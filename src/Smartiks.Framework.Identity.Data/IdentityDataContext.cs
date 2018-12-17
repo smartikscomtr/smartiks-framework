@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using IdentityServer4.EntityFramework.Entities;
+﻿using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Smartiks.Framework.Identity.Data.Abstractions;
+using System;
+using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Identity.Data
 {
@@ -35,31 +35,31 @@ namespace Smartiks.Framework.Identity.Data
             base.OnModelCreating(modelBuilder);
 
             #region User
-            modelBuilder.Entity<TUser>(b => { b.ToTable("Users"); }); 
+            modelBuilder.Entity<TUser>(b => { b.ToTable("Users"); });
             #endregion
 
             #region Role
-            modelBuilder.Entity<TRole>(b => { b.ToTable("Roles"); }); 
+            modelBuilder.Entity<TRole>(b => { b.ToTable("Roles"); });
             #endregion
 
             #region UserRole
-            modelBuilder.Entity<IdentityUserRole<TId>>(b => { b.ToTable("UserRoles"); }); 
+            modelBuilder.Entity<IdentityUserRole<TId>>(b => { b.ToTable("UserRoles"); });
             #endregion
 
             #region UserClaim
-            modelBuilder.Entity<IdentityUserClaim<TId>>(b => { b.ToTable("UserClaims"); }); 
+            modelBuilder.Entity<IdentityUserClaim<TId>>(b => { b.ToTable("UserClaims"); });
             #endregion
 
             #region UserLogin
-            modelBuilder.Entity<IdentityUserLogin<TId>>(b => { b.ToTable("UserLogins"); }); 
+            modelBuilder.Entity<IdentityUserLogin<TId>>(b => { b.ToTable("UserLogins"); });
             #endregion
 
             #region UserToken
-            modelBuilder.Entity<IdentityUserToken<TId>>(b => { b.ToTable("UserTokens"); }); 
+            modelBuilder.Entity<IdentityUserToken<TId>>(b => { b.ToTable("UserTokens"); });
             #endregion
 
             #region RoleClaim
-            modelBuilder.Entity<IdentityRoleClaim<TId>>(b => { b.ToTable("RoleClaims"); }); 
+            modelBuilder.Entity<IdentityRoleClaim<TId>>(b => { b.ToTable("RoleClaims"); });
             #endregion
 
             #region ApiResource
@@ -546,146 +546,6 @@ namespace Smartiks.Framework.Identity.Data
                     .IsUnique();
 
                 b.ToTable("IdentityResources");
-            });
-            #endregion
-
-            #region ApiResourceClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
-                    .WithMany("UserClaims")
-                    .HasForeignKey("ApiResourceId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ApiScope
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
-                    .WithMany("Scopes")
-                    .HasForeignKey("ApiResourceId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ApiScopeClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.ApiScope", "ApiScope")
-                    .WithMany("UserClaims")
-                    .HasForeignKey("ApiScopeId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ApiSecret
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiSecret", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.ApiResource", "ApiResource")
-                    .WithMany("Secrets")
-                    .HasForeignKey("ApiResourceId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("Claims")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientCorsOrigin
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("AllowedCorsOrigins")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientGrantType
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("AllowedGrantTypes")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientIdPRestriction
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("IdentityProviderRestrictions")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientPostLogoutRedirectUri
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("PostLogoutRedirectUris")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientProperty
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientProperty", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("Properties")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientRedirectUri
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("RedirectUris")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientScope
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("AllowedScopes")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region ClientSecret
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                    .WithMany("ClientSecrets")
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-            #endregion
-
-            #region IdentityClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityClaim", b =>
-            {
-                b.HasOne("IdentityServer4.EntityFramework.Entities.IdentityResource", "IdentityResource")
-                    .WithMany("UserClaims")
-                    .HasForeignKey("IdentityResourceId")
-                    .OnDelete(DeleteBehavior.Cascade);
             });
             #endregion
 
