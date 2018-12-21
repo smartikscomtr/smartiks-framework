@@ -180,6 +180,13 @@ namespace Smartiks.Framework.IO.Excel
                         {
                             cell.Style.Numberformat.Format = property.DisplayFormat;
                         }
+                        else
+                        {
+                            if (typeof(DateTime).IsAssignableFrom(property.UnderlyingType))
+                            {
+                                cell.Style.Numberformat.Format = "mm-dd-yy";
+                            }
+                        }
 
                         columnNo++;
                     }
