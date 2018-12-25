@@ -1,11 +1,11 @@
-﻿using IdentityServer4.EntityFramework.Entities;
-using IdentityServer4.EntityFramework.Interfaces;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Smartiks.Framework.Identity.Data.Abstractions;
 using System;
 using System.Threading.Tasks;
+using IdentityServer4.EntityFramework.Interfaces;
+using IdentityServer4.EntityFramework.Entities;
 
 namespace Smartiks.Framework.Identity.Data
 {
@@ -20,9 +20,11 @@ namespace Smartiks.Framework.Identity.Data
 
         #region DbSets
 
+        public DbSet<ApiResource> ApiResources { get; set; }
+
         public DbSet<Client> Clients { get; set; }
 
-        public DbSet<ApiResource> ApiResources { get; set; }
+        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
 
         public DbSet<IdentityResource> IdentityResources { get; set; }
 
@@ -34,552 +36,251 @@ namespace Smartiks.Framework.Identity.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            #region User
+            #region Identity
+
             modelBuilder.Entity<TUser>(b => { b.ToTable("Users"); });
-            #endregion
 
-            #region Role
             modelBuilder.Entity<TRole>(b => { b.ToTable("Roles"); });
-            #endregion
 
-            #region UserRole
             modelBuilder.Entity<IdentityUserRole<TId>>(b => { b.ToTable("UserRoles"); });
-            #endregion
 
-            #region UserClaim
             modelBuilder.Entity<IdentityUserClaim<TId>>(b => { b.ToTable("UserClaims"); });
-            #endregion
 
-            #region UserLogin
             modelBuilder.Entity<IdentityUserLogin<TId>>(b => { b.ToTable("UserLogins"); });
-            #endregion
 
-            #region UserToken
             modelBuilder.Entity<IdentityUserToken<TId>>(b => { b.ToTable("UserTokens"); });
-            #endregion
 
-            #region RoleClaim
             modelBuilder.Entity<IdentityRoleClaim<TId>>(b => { b.ToTable("RoleClaims"); });
+
             #endregion
 
-            #region ApiResource
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
+
+            #region IdentityServer4
+
+            modelBuilder.Entity<Client>(client =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                client.ToTable("Clients");
 
-                b.Property<string>("Description")
-                    .HasMaxLength(1000);
+                client.HasKey(x => x.Id);
 
-                b.Property<string>("DisplayName")
-                    .HasMaxLength(200);
+                client.Property(x => x.ClientId).HasMaxLength(200).IsRequired();
+                client.Property(x => x.ProtocolType).HasMaxLength(200).IsRequired();
+                client.Property(x => x.ClientName).HasMaxLength(200);
+                client.Property(x => x.ClientUri).HasMaxLength(2000);
+                client.Property(x => x.LogoUri).HasMaxLength(2000);
+                client.Property(x => x.Description).HasMaxLength(1000);
+                client.Property(x => x.FrontChannelLogoutUri).HasMaxLength(2000);
+                client.Property(x => x.BackChannelLogoutUri).HasMaxLength(2000);
+                client.Property(x => x.ClientClaimsPrefix).HasMaxLength(200);
+                client.Property(x => x.PairWiseSubjectSalt).HasMaxLength(200);
+                client.Property(x => x.UserCodeType).HasMaxLength(100);
 
-                b.Property<bool>("Enabled");
+                client.HasIndex(x => x.ClientId).IsUnique();
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.HasKey("Id");
-
-                b.HasIndex("Name")
-                    .IsUnique();
-
-                b.ToTable("ApiResources");
+                client.HasMany(x => x.AllowedGrantTypes).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.RedirectUris).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.PostLogoutRedirectUris).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.AllowedScopes).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.ClientSecrets).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.Claims).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.IdentityProviderRestrictions).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.AllowedCorsOrigins).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                client.HasMany(x => x.Properties).WithOne(x => x.Client).HasForeignKey(x => x.ClientId).IsRequired().OnDelete(DeleteBehavior.Cascade);
             });
-            #endregion
 
-            #region ApiResourceClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResourceClaim", b =>
+            modelBuilder.Entity<ClientGrantType>(grantType =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                grantType.ToTable("ClientGrantTypes");
 
-                b.Property<int?>("ApiResourceId")
-                    .IsRequired();
-
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ApiResourceId");
-
-                b.ToTable("ApiClaims");
+                grantType.Property(x => x.GrantType).HasMaxLength(250).IsRequired();
             });
-            #endregion
 
-            #region ApiScope
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScope", b =>
+            modelBuilder.Entity<ClientRedirectUri>(redirectUri =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                redirectUri.ToTable("ClientRedirectUris");
 
-                b.Property<int?>("ApiResourceId")
-                    .IsRequired();
-
-                b.Property<string>("Description")
-                    .HasMaxLength(1000);
-
-                b.Property<string>("DisplayName")
-                    .HasMaxLength(200);
-
-                b.Property<bool>("Emphasize");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.Property<bool>("Required");
-
-                b.Property<bool>("ShowInDiscoveryDocument");
-
-                b.HasKey("Id");
-
-                b.HasIndex("ApiResourceId");
-
-                b.HasIndex("Name")
-                    .IsUnique();
-
-                b.ToTable("ApiScopes");
+                redirectUri.Property(x => x.RedirectUri).HasMaxLength(2000).IsRequired();
             });
-            #endregion
 
-            #region ApiScopeClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiScopeClaim", b =>
+            modelBuilder.Entity<ClientPostLogoutRedirectUri>(postLogoutRedirectUri =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                postLogoutRedirectUri.ToTable("ClientPostLogoutRedirectUris");
 
-                b.Property<int?>("ApiScopeId")
-                    .IsRequired();
-
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ApiScopeId");
-
-                b.ToTable("ApiScopeClaims");
+                postLogoutRedirectUri.Property(x => x.PostLogoutRedirectUri).HasMaxLength(2000).IsRequired();
             });
-            #endregion
 
-            #region ApiSecret
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiSecret", b =>
+            modelBuilder.Entity<ClientScope>(scope =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                scope.ToTable("ClientScopes");
 
-                b.Property<int?>("ApiResourceId")
-                    .IsRequired();
-
-                b.Property<string>("Description")
-                    .HasMaxLength(1000);
-
-                b.Property<DateTime?>("Expiration");
-
-                b.Property<string>("Type")
-                    .HasMaxLength(250);
-
-                b.Property<string>("Value")
-                    .HasMaxLength(2000);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ApiResourceId");
-
-                b.ToTable("ApiSecrets");
+                scope.Property(x => x.Scope).HasMaxLength(200).IsRequired();
             });
-            #endregion
 
-            #region Client
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.Client", b =>
+            modelBuilder.Entity<ClientSecret>(secret =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                secret.ToTable("ClientSecrets");
 
-                b.Property<int>("AbsoluteRefreshTokenLifetime");
-
-                b.Property<int>("AccessTokenLifetime");
-
-                b.Property<int>("AccessTokenType");
-
-                b.Property<bool>("AllowAccessTokensViaBrowser");
-
-                b.Property<bool>("AllowOfflineAccess");
-
-                b.Property<bool>("AllowPlainTextPkce");
-
-                b.Property<bool>("AllowRememberConsent");
-
-                b.Property<bool>("AlwaysIncludeUserClaimsInIdToken");
-
-                b.Property<bool>("AlwaysSendClientClaims");
-
-                b.Property<int>("AuthorizationCodeLifetime");
-
-                b.Property<bool>("BackChannelLogoutSessionRequired");
-
-                b.Property<string>("BackChannelLogoutUri")
-                    .HasMaxLength(2000);
-
-                b.Property<string>("ClientClaimsPrefix")
-                    .HasMaxLength(200);
-
-                b.Property<string>("ClientId")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.Property<string>("ClientName")
-                    .HasMaxLength(200);
-
-                b.Property<string>("ClientUri")
-                    .HasMaxLength(2000);
-
-                b.Property<int?>("ConsentLifetime");
-
-                b.Property<string>("Description")
-                    .HasMaxLength(1000);
-
-                b.Property<bool>("EnableLocalLogin");
-
-                b.Property<bool>("Enabled");
-
-                b.Property<bool>("FrontChannelLogoutSessionRequired");
-
-                b.Property<string>("FrontChannelLogoutUri")
-                    .HasMaxLength(2000);
-
-                b.Property<int>("IdentityTokenLifetime");
-
-                b.Property<bool>("IncludeJwtId");
-
-                b.Property<string>("LogoUri")
-                    .HasMaxLength(2000);
-
-                b.Property<string>("PairWiseSubjectSalt")
-                    .HasMaxLength(200);
-
-                b.Property<string>("ProtocolType")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.Property<int>("RefreshTokenExpiration");
-
-                b.Property<int>("RefreshTokenUsage");
-
-                b.Property<bool>("RequireClientSecret");
-
-                b.Property<bool>("RequireConsent");
-
-                b.Property<bool>("RequirePkce");
-
-                b.Property<int>("SlidingRefreshTokenLifetime");
-
-                b.Property<bool>("UpdateAccessTokenClaimsOnRefresh");
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId")
-                    .IsUnique();
-
-                b.ToTable("Clients");
+                secret.Property(x => x.Value).HasMaxLength(4000).IsRequired();
+                secret.Property(x => x.Type).HasMaxLength(250).IsRequired();
+                secret.Property(x => x.Description).HasMaxLength(2000);
             });
-            #endregion
 
-            #region ClientClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
+            modelBuilder.Entity<ClientClaim>(claim =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                claim.ToTable("ClientClaims");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasMaxLength(250);
-
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasMaxLength(250);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientClaims");
+                claim.Property(x => x.Type).HasMaxLength(250).IsRequired();
+                claim.Property(x => x.Value).HasMaxLength(250).IsRequired();
             });
-            #endregion
 
-            #region ClientCorsOrigin
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientCorsOrigin", b =>
+            modelBuilder.Entity<ClientIdPRestriction>(idPRestriction =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                idPRestriction.ToTable("ClientIdPRestrictions");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("Origin")
-                    .IsRequired()
-                    .HasMaxLength(150);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientCorsOrigins");
+                idPRestriction.Property(x => x.Provider).HasMaxLength(200).IsRequired();
             });
-            #endregion
 
-            #region ClientGrantType
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientGrantType", b =>
+            modelBuilder.Entity<ClientCorsOrigin>(corsOrigin =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                corsOrigin.ToTable("ClientCorsOrigins");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("GrantType")
-                    .IsRequired()
-                    .HasMaxLength(250);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientGrantTypes");
+                corsOrigin.Property(x => x.Origin).HasMaxLength(150).IsRequired();
             });
-            #endregion
 
-            #region ClientIdPRestriction
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientIdPRestriction", b =>
+            modelBuilder.Entity<ClientProperty>(property =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                property.ToTable("ClientProperties");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("Provider")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientIdPRestrictions");
+                property.Property(x => x.Key).HasMaxLength(250).IsRequired();
+                property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
             });
-            #endregion
 
-            #region ClientPostLogoutRedirectUri
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientPostLogoutRedirectUri", b =>
+            modelBuilder.Entity<PersistedGrant>(grant =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                grant.ToTable("PersistedGrants");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
+                grant.Property(x => x.Key).HasMaxLength(200).ValueGeneratedNever();
+                grant.Property(x => x.Type).HasMaxLength(50).IsRequired();
+                grant.Property(x => x.SubjectId).HasMaxLength(200);
+                grant.Property(x => x.ClientId).HasMaxLength(200).IsRequired();
+                grant.Property(x => x.CreationTime).IsRequired();
+                // 50000 chosen to be explicit to allow enough size to avoid truncation, yet stay beneath the MySql row size limit of ~65K
+                // apparently anything over 4K converts to nvarchar(max) on SqlServer
+                grant.Property(x => x.Data).HasMaxLength(50000).IsRequired();
 
-                b.Property<string>("PostLogoutRedirectUri")
-                    .IsRequired()
-                    .HasMaxLength(2000);
+                grant.HasKey(x => x.Key);
 
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientPostLogoutRedirectUris");
+                grant.HasIndex(x => new { x.SubjectId, x.ClientId, x.Type });
             });
-            #endregion
 
-            #region ClientProperty
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientProperty", b =>
+            modelBuilder.Entity<DeviceFlowCodes>(codes =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                codes.ToTable("DeviceFlowCodes");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
+                codes.Property(x => x.DeviceCode).HasMaxLength(200).IsRequired();
+                codes.Property(x => x.UserCode).HasMaxLength(200).IsRequired();
+                codes.Property(x => x.SubjectId).HasMaxLength(200);
+                codes.Property(x => x.ClientId).HasMaxLength(200).IsRequired();
+                codes.Property(x => x.CreationTime).IsRequired();
+                codes.Property(x => x.Expiration).IsRequired();
+                // 50000 chosen to be explicit to allow enough size to avoid truncation, yet stay beneath the MySql row size limit of ~65K
+                // apparently anything over 4K converts to nvarchar(max) on SqlServer
+                codes.Property(x => x.Data).HasMaxLength(50000).IsRequired();
 
-                b.Property<string>("Key")
-                    .IsRequired()
-                    .HasMaxLength(250);
+                codes.HasKey(x => new { x.UserCode });
 
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientProperties");
+                codes.HasIndex(x => x.DeviceCode).IsUnique();
             });
-            #endregion
 
-            #region ClientRedirectUri
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientRedirectUri", b =>
+            modelBuilder.Entity<IdentityResource>(identityResource =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                identityResource.ToTable("IdentityResources");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
+                identityResource.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                identityResource.Property(x => x.DisplayName).HasMaxLength(200);
+                identityResource.Property(x => x.Description).HasMaxLength(1000);
 
-                b.Property<string>("RedirectUri")
-                    .IsRequired()
-                    .HasMaxLength(2000);
+                identityResource.HasIndex(x => x.Name).IsUnique();
 
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientRedirectUris");
+                identityResource.HasMany(x => x.UserClaims).WithOne(x => x.IdentityResource).HasForeignKey(x => x.IdentityResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                identityResource.HasMany(x => x.Properties).WithOne(x => x.IdentityResource).HasForeignKey(x => x.IdentityResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
             });
-            #endregion
 
-            #region ClientScope
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientScope", b =>
+            modelBuilder.Entity<IdentityClaim>(claim =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                claim.ToTable("IdentityClaims");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("Scope")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientScopes");
+                claim.Property(x => x.Type).HasMaxLength(200).IsRequired();
             });
-            #endregion
 
-            #region ClientSecret
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientSecret", b =>
+            modelBuilder.Entity<IdentityResourceProperty>(property =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                property.ToTable("IdentityResourceProperties");
 
-                b.Property<int?>("ClientId")
-                    .IsRequired();
-
-                b.Property<string>("Description")
-                    .HasMaxLength(2000);
-
-                b.Property<DateTime?>("Expiration");
-
-                b.Property<string>("Type")
-                    .HasMaxLength(250);
-
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                b.HasKey("Id");
-
-                b.HasIndex("ClientId");
-
-                b.ToTable("ClientSecrets");
+                property.Property(x => x.Key).HasMaxLength(250).IsRequired();
+                property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
             });
-            #endregion
 
-            #region IdentityClaim
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityClaim", b =>
+            modelBuilder.Entity<ApiResource>(apiResource =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                apiResource.ToTable("ApiResources");
 
-                b.Property<int?>("IdentityResourceId")
-                    .IsRequired();
+                apiResource.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                apiResource.Property(x => x.DisplayName).HasMaxLength(200);
+                apiResource.Property(x => x.Description).HasMaxLength(1000);
 
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasMaxLength(200);
+                apiResource.HasIndex(x => x.Name).IsUnique();
 
-                b.HasKey("Id");
-
-                b.HasIndex("IdentityResourceId");
-
-                b.ToTable("IdentityClaims");
+                apiResource.HasMany(x => x.Secrets).WithOne(x => x.ApiResource).HasForeignKey(x => x.ApiResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                apiResource.HasMany(x => x.Scopes).WithOne(x => x.ApiResource).HasForeignKey(x => x.ApiResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                apiResource.HasMany(x => x.UserClaims).WithOne(x => x.ApiResource).HasForeignKey(x => x.ApiResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                apiResource.HasMany(x => x.Properties).WithOne(x => x.ApiResource).HasForeignKey(x => x.ApiResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
             });
-            #endregion
 
-            #region IdentityResource
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.IdentityResource", b =>
+            modelBuilder.Entity<ApiSecret>(apiSecret =>
             {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd();
+                apiSecret.ToTable("ApiSecrets");
 
-                b.Property<string>("Description")
-                    .HasMaxLength(1000);
-
-                b.Property<string>("DisplayName")
-                    .HasMaxLength(200);
-
-                b.Property<bool>("Emphasize");
-
-                b.Property<bool>("Enabled");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.Property<bool>("Required");
-
-                b.Property<bool>("ShowInDiscoveryDocument");
-
-                b.HasKey("Id");
-
-                b.HasIndex("Name")
-                    .IsUnique();
-
-                b.ToTable("IdentityResources");
+                apiSecret.Property(x => x.Description).HasMaxLength(1000);
+                apiSecret.Property(x => x.Value).HasMaxLength(4000).IsRequired();
+                apiSecret.Property(x => x.Type).HasMaxLength(250).IsRequired();
             });
-            #endregion
 
-            #region PersistedGrant
-            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.PersistedGrant", b =>
+            modelBuilder.Entity<ApiResourceClaim>(apiClaim =>
             {
-                b.Property<string>("Key")
-                    .HasMaxLength(200);
+                apiClaim.ToTable("ApiResourceClaims");
 
-                b.Property<string>("ClientId")
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                b.Property<DateTime>("CreationTime");
-
-                b.Property<string>("Data")
-                    .IsRequired()
-                    .HasMaxLength(50000);
-
-                b.Property<DateTime?>("Expiration");
-
-                b.Property<string>("SubjectId")
-                    .HasMaxLength(200);
-
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                b.HasKey("Key");
-
-                b.HasIndex("SubjectId", "ClientId", "Type");
-
-                b.ToTable("PersistedGrants");
+                apiClaim.Property(x => x.Type).HasMaxLength(200).IsRequired();
             });
+
+            modelBuilder.Entity<ApiScope>(apiScope =>
+            {
+                apiScope.ToTable("ApiScopes");
+
+                apiScope.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                apiScope.Property(x => x.DisplayName).HasMaxLength(200);
+                apiScope.Property(x => x.Description).HasMaxLength(1000);
+
+                apiScope.HasIndex(x => x.Name).IsUnique();
+
+                apiScope.HasMany(x => x.UserClaims).WithOne(x => x.ApiScope).HasForeignKey(x => x.ApiScopeId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ApiScopeClaim>(apiScopeClaim =>
+            {
+                apiScopeClaim.ToTable("ApiScopeClaims");
+
+                apiScopeClaim.Property(x => x.Type).HasMaxLength(200).IsRequired();
+            });
+
+            modelBuilder.Entity<ApiResourceProperty>(property =>
+            {
+                property.ToTable("ApiResourceProperties");
+
+                property.Property(x => x.Key).HasMaxLength(250).IsRequired();
+                property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
+            });
+
             #endregion
         }
 
