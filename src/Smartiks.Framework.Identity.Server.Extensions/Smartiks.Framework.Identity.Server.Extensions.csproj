@@ -8,7 +8,7 @@
     <Product>Smartiks.Framework.Identity.Server.Extensions</Product>
     <Description>Smartiks.Framework.Identity.Server.Extensions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

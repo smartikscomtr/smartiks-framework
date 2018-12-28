@@ -1,14 +1,14 @@
-﻿using System;
-using IdentityServer4.EntityFramework.Interfaces;
+﻿using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Smartiks.Framework.Identity.Server.Abstractions;
+using System;
 
 namespace Smartiks.Framework.Identity.Server.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddIdentityAuthenticationServer<TContext, TUser, TRole>(this IServiceCollection services, Action<IdentityAuthenticationServerOptions> optionsAction)
+        public static IServiceCollection AddIdentityAuthenticationServer<TContext, TUser, TRole>(this IServiceCollection services, Action<IdentityAuthenticationServerOptions> optionsAction)
             where TContext : DbContext, IConfigurationDbContext, IPersistedGrantDbContext
             where TUser : class
             where TRole : class
@@ -16,15 +16,13 @@ namespace Smartiks.Framework.Identity.Server.Extensions
             services
                 .AddIdentity<TUser, TRole>()
                 .AddEntityFrameworkStores<TContext>();
-                //.AddDefaultTokenProviders();
 
-            //services
-            //    .AddAuthentication();
-
-            AddIdentityAuthenticationServerCore<TContext, TUser, TRole>(services, optionsAction);
+            return
+                services
+                    .AddIdentityAuthenticationServerCore<TContext, TUser, TRole>(optionsAction);
         }
 
-        public static void AddIdentityAuthenticationServerCore<TContext, TUser, TRole>(this IServiceCollection services, Action<IdentityAuthenticationServerOptions> optionsAction)
+        public static IServiceCollection AddIdentityAuthenticationServerCore<TContext, TUser, TRole>(this IServiceCollection services, Action<IdentityAuthenticationServerOptions> optionsAction)
             where TContext : DbContext, IConfigurationDbContext, IPersistedGrantDbContext
             where TUser : class
             where TRole : class
@@ -35,17 +33,20 @@ namespace Smartiks.Framework.Identity.Server.Extensions
 
             var identityServerBuilder =
                 services
-                    .AddIdentityServer(optionsBuilder => {
+                    .AddIdentityServer(optionsBuilder =>
+                    {
                         optionsBuilder.Events.RaiseInformationEvents = true;
                         optionsBuilder.Events.RaiseErrorEvents = true;
                         optionsBuilder.Events.RaiseFailureEvents = true;
                         optionsBuilder.Events.RaiseSuccessEvents = true;
                     })
                     .AddAspNetIdentity<TUser>()
-                    .AddConfigurationStore(optionsBuilder => {
+                    .AddConfigurationStore<TContext>(optionsBuilder =>
+                    {
                         optionsBuilder.ConfigureDbContext = options.DbContextOptionsBuilder;
                     })
-                    .AddOperationalStore(optionsBuilder => {
+                    .AddOperationalStore<TContext>(optionsBuilder =>
+                    {
                         optionsBuilder.ConfigureDbContext = options.DbContextOptionsBuilder;
                         optionsBuilder.EnableTokenCleanup = true;
                     });
@@ -58,6 +59,8 @@ namespace Smartiks.Framework.Identity.Server.Extensions
             {
                 identityServerBuilder.AddDeveloperSigningCredential();
             }
+
+            return services;
         }
     }
 }
