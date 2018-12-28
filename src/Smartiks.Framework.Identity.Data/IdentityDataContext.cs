@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Smartiks.Framework.Identity.Data.Abstractions;
 using System;
 using System.Threading.Tasks;
-using IdentityServer4.EntityFramework.Interfaces;
-using IdentityServer4.EntityFramework.Entities;
 
 namespace Smartiks.Framework.Identity.Data
 {
@@ -14,7 +14,7 @@ namespace Smartiks.Framework.Identity.Data
         where TUser : User<TId>
         where TRole : Role<TId>
     {
-        public IdentityDataContext(DbContextOptions<IdentityDataContext<TId, TUser, TRole>> options) : base(options)
+        public IdentityDataContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -53,7 +53,6 @@ namespace Smartiks.Framework.Identity.Data
             modelBuilder.Entity<IdentityRoleClaim<TId>>(b => { b.ToTable("RoleClaims"); });
 
             #endregion
-
 
             #region IdentityServer4
 
