@@ -47,6 +47,30 @@ namespace Smartiks.Framework.Data.Extensions
 
                                 break;
 
+                            case Expression<Func<TQueryable, bool>> booleanExpression:
+
+                                queryable = orderedQueryable.ThenBy(booleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool?>> nullableBooleanExpression:
+
+                                queryable = orderedQueryable.ThenBy(nullableBooleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime>> dateTimeExpression:
+
+                                queryable = orderedQueryable.ThenBy(dateTimeExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime?>> nullableDateTimeExpression:
+
+                                queryable = orderedQueryable.ThenBy(nullableDateTimeExpression);
+
+                                break;
+
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(queryOrder.Expression), queryOrder.Expression, null);
                         }
@@ -84,6 +108,30 @@ namespace Smartiks.Framework.Data.Extensions
                             case Expression<Func<TQueryable, decimal?>> nullableDecimalExpression:
 
                                 queryable = orderedQueryable.ThenByDescending(nullableDecimalExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool>> booleanExpression:
+
+                                queryable = orderedQueryable.ThenByDescending(booleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool?>> nullableBooleanExpression:
+
+                                queryable = orderedQueryable.ThenByDescending(nullableBooleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime>> dateTimeExpression:
+
+                                queryable = orderedQueryable.ThenByDescending(dateTimeExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime?>> nullableDateTimeExpression:
+
+                                queryable = orderedQueryable.ThenByDescending(nullableDateTimeExpression);
 
                                 break;
 
@@ -132,6 +180,30 @@ namespace Smartiks.Framework.Data.Extensions
 
                                 break;
 
+                            case Expression<Func<TQueryable, bool>> booleanExpression:
+
+                                queryable = queryable.OrderBy(booleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool?>> nullableBooleanExpression:
+
+                                queryable = queryable.OrderBy(nullableBooleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime>> dateTimeExpression:
+
+                                queryable = queryable.OrderBy(dateTimeExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime?>> nullableDateTimeExpression:
+
+                                queryable = queryable.OrderBy(nullableDateTimeExpression);
+
+                                break;
+
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(queryOrder.Expression), queryOrder.Expression, null);
                         }
@@ -169,6 +241,30 @@ namespace Smartiks.Framework.Data.Extensions
                             case Expression<Func<TQueryable, decimal?>> nullableDecimalExpression:
 
                                 queryable = queryable.OrderByDescending(nullableDecimalExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool>> booleanExpression:
+
+                                queryable = queryable.OrderByDescending(booleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, bool?>> nullableBooleanExpression:
+
+                                queryable = queryable.OrderByDescending(nullableBooleanExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime>> dateTimeExpression:
+
+                                queryable = queryable.OrderByDescending(dateTimeExpression);
+
+                                break;
+
+                            case Expression<Func<TQueryable, DateTime?>> nullableDateTimeExpression:
+
+                                queryable = queryable.OrderByDescending(nullableDateTimeExpression);
 
                                 break;
 
