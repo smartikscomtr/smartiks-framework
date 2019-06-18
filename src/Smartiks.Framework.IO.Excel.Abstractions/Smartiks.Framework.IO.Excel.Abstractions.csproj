@@ -3,13 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Company>Smartiks</Company>
     <Authors>Murat Atay</Authors>
+    <Company>Smartiks</Company>
     <Description>Smartiks.Framework.IO.Excel.Abstractions</Description>
-    <Product>Smartiks.Framework.IO.Excel.Abstractions</Product>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Version>2.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>

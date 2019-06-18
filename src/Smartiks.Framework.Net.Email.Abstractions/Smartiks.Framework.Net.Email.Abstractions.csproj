@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,6 +7,7 @@
     <Company>Smartiks</Company>
     <Description>Smartiks.Framework.Net.Email.Abstractions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>

@@ -7,7 +7,8 @@
     <Company>Smartiks</Company>
     <Description>Smartiks.Framework.Data.Extensions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
