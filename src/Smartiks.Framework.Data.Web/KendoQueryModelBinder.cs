@@ -417,17 +417,67 @@ namespace Smartiks.Framework.Data.Web
             {
                 var documentType = typeof(TQueryable);
 
+                Expression bodyLeft;
+                UnaryExpression bodyRight;
+
+                if (propertyName.Contains("."))
+                {
+                    var nestedPropertyNames = propertyName.Split('.');
+
+                    var propertyType = documentType;
+
+                    foreach (var nestedProperty in nestedPropertyNames.Select(property => propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)))
+                    {
+                        if (nestedProperty == null)
+                            throw new ArgumentOutOfRangeException(nameof(nestedProperty), propertyName);
+
+                        propertyType = nestedProperty.PropertyType;
+                    }
+
+                    bodyLeft = parameter;
+
+                    foreach (var property in propertyName.Split('.'))
+                    {
+                        bodyLeft = System.Linq.Expressions.Expression.PropertyOrField(bodyLeft, property);
+                    }
+
+                    bodyRight = System.Linq.Expressions.Expression.Convert(
+                        System.Linq.Expressions.Expression.Constant(Convert.ChangeType(value, bodyLeft.Type)),
+                        bodyLeft.Type
+                    );
+
+                    if (bodyLeft.Type != bodyRight.Type)
+                    {
+                        var nullableType = Nullable.GetUnderlyingType(bodyLeft.Type);
+
+                        if (nullableType != null)
+                            bodyRight = System.Linq.Expressions.Expression.Convert(bodyRight, bodyLeft.Type);
+
+                        else
+                            bodyLeft = System.Linq.Expressions.Expression.Convert(bodyLeft, bodyRight.Type);
+                    }
+
+                    return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
+                }
+
                 var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
                 if (propertyInfo == null)
                     throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
 
 
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
+                bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
 
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
+                object constantValue = null;
 
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+
+                if (value != null)
+                {
+                    constantValue = Convert.ChangeType(value, type);
+                }
+
+                bodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(constantValue), propertyInfo.PropertyType);
 
                 return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
             }
