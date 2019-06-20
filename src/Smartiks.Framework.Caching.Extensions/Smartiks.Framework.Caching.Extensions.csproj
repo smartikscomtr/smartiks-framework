@@ -8,7 +8,7 @@
     <Product>Smartiks.Framework.Caching.Extensions</Product>
     <Description>Smartiks.Framework.Caching.Extensions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
