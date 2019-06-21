@@ -57,7 +57,3 @@
 ### Smartiks.Framework.Text.Abstractions [![Package](https://img.shields.io/nuget/v/Smartiks.Framework.Text.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Text.Abstractions)
 
 ### Smartiks.Framework.Text [![Package](https://img.shields.io/nuget/v/Smartiks.Framework.Text.svg)](https://www.nuget.org/packages/Smartiks.Framework.Text)
-
-## License
-
-[MIT](https://github.com/smartikscomtr/smartiks-framework/blob/master/LICENSE)
