@@ -7,4 +7,4 @@ https://www.nuget.org/profiles/Smartiks
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT)
+[MIT](https://github.com/smartikscomtr/smartiks-framework/blob/master/LICENSE)
