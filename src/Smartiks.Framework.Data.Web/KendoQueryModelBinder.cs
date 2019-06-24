@@ -417,56 +417,40 @@ namespace Smartiks.Framework.Data.Web
             {
                 var documentType = typeof(TQueryable);
 
-                Expression bodyLeft;
-                UnaryExpression bodyRight;
+                ThrowIsInvalidPropertyName(propertyName, documentType);
+
 
                 if (propertyName.Contains("."))
                 {
-                    var nestedPropertyNames = propertyName.Split('.');
+                    var propertyNames = propertyName.Split('.');
 
-                    var propertyType = documentType;
+                    Expression nestedBodyLeft = parameter;
 
-                    foreach (var nestedProperty in nestedPropertyNames.Select(property => propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)))
+                    foreach (var property in propertyNames)
                     {
-                        if (nestedProperty == null)
-                            throw new ArgumentOutOfRangeException(nameof(nestedProperty), propertyName);
-
-                        propertyType = nestedProperty.PropertyType;
+                        nestedBodyLeft = System.Linq.Expressions.Expression.Property(nestedBodyLeft, property);
                     }
 
-                    bodyLeft = parameter;
+                    var nestedBodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(value), nestedBodyLeft.Type);
 
-                    foreach (var property in propertyName.Split('.'))
+                    if (nestedBodyLeft.Type != nestedBodyRight.Type)
                     {
-                        bodyLeft = System.Linq.Expressions.Expression.PropertyOrField(bodyLeft, property);
-                    }
-
-                    bodyRight = System.Linq.Expressions.Expression.Convert(
-                        System.Linq.Expressions.Expression.Constant(Convert.ChangeType(value, bodyLeft.Type)),
-                        bodyLeft.Type
-                    );
-
-                    if (bodyLeft.Type != bodyRight.Type)
-                    {
-                        var nullableType = Nullable.GetUnderlyingType(bodyLeft.Type);
+                        var nullableType = Nullable.GetUnderlyingType(nestedBodyLeft.Type);
 
                         if (nullableType != null)
-                            bodyRight = System.Linq.Expressions.Expression.Convert(bodyRight, bodyLeft.Type);
+                            nestedBodyRight = System.Linq.Expressions.Expression.Convert(nestedBodyRight, nestedBodyLeft.Type);
 
                         else
-                            bodyLeft = System.Linq.Expressions.Expression.Convert(bodyLeft, bodyRight.Type);
+                            nestedBodyLeft = System.Linq.Expressions.Expression.Convert(nestedBodyLeft, nestedBodyRight.Type);
                     }
 
-                    return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
+                    return System.Linq.Expressions.Expression.Equal(nestedBodyLeft, nestedBodyRight);
                 }
 
                 var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
 
-
-                bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
+                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
 
                 object constantValue = null;
 
@@ -477,7 +461,7 @@ namespace Smartiks.Framework.Data.Web
                     constantValue = Convert.ChangeType(value, type);
                 }
 
-                bodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(constantValue), propertyInfo.PropertyType);
+                var bodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(constantValue), propertyInfo.PropertyType);
 
                 return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
             }
@@ -654,6 +638,35 @@ namespace Smartiks.Framework.Data.Web
                 var expression = ContainsExpression(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.Not(expression);
+            }
+
+
+            private static void ThrowIsInvalidPropertyName(string propertyName, Type type)
+            {
+                if (propertyName.Contains("."))
+                {
+                    var propertyType = type;
+
+                    var propertyNames = propertyName.Split('.');
+
+                    var propertyInfos = propertyNames.Select(property => propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase));
+
+                    foreach (var propertyInfo in propertyInfos)
+                    {
+                        if (propertyInfo == null)
+                            throw new ArgumentOutOfRangeException(nameof(propertyInfo), propertyName);
+
+                        propertyType = propertyInfo.PropertyType;
+                    }
+                }
+
+                else
+                {
+                    var propertyInfo = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+
+                    if (propertyInfo == null)
+                        throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
+                }
             }
         }
     }
