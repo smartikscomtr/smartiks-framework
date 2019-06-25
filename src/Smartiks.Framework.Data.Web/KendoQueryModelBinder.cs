@@ -413,225 +413,83 @@ namespace Smartiks.Framework.Data.Web
                 return body;
             }
 
+
             public static BinaryExpression EqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                ThrowIsInvalidPropertyName(propertyName, documentType);
-
-
-				if (propertyName.Contains("."))
-                {
-                    var propertyNames = propertyName.Split('.');
-
-                    Expression nestedBodyLeft = parameter;
-
-                    foreach (var property in propertyNames)
-                    {
-                        nestedBodyLeft = System.Linq.Expressions.Expression.Property(nestedBodyLeft, property);
-                    }
-
-					var nestedBodyRight = System.Linq.Expressions.Expression.Convert(
-                        System.Linq.Expressions.Expression.Constant(GetConstantValue(value, nestedBodyLeft.Type)),
-                        nestedBodyLeft.Type
-                    );
-
-                    return System.Linq.Expressions.Expression.Equal(nestedBodyLeft, nestedBodyRight);
-                }
-
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-				var bodyRight = System.Linq.Expressions.Expression.Convert(
-                    System.Linq.Expressions.Expression.Constant(GetConstantValue(value, propertyInfo.PropertyType)),
-                    propertyInfo.PropertyType
-                );
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
             }
 
             public static BinaryExpression NotEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.NotEqual(bodyLeft, bodyRight);
             }
 
             public static BinaryExpression LessThanExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.LessThan(bodyLeft, bodyRight);
             }
 
             public static BinaryExpression LessThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.LessThanOrEqual(bodyLeft, bodyRight);
             }
 
             public static BinaryExpression GreaterThanExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.GreaterThan(bodyLeft, bodyRight);
             }
 
             public static BinaryExpression GreaterThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var bodyRight = System.Linq.Expressions.Expression.Constant(constantValue);
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
                 return System.Linq.Expressions.Expression.GreaterThanOrEqual(bodyLeft, bodyRight);
             }
 
             public static MethodCallExpression StartsWithExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
                 var methodInfo = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
 
                 if (methodInfo == null)
                     throw new ArgumentOutOfRangeException(nameof(methodInfo), propertyName);
 
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                var instance = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var argument = System.Linq.Expressions.Expression.Constant(constantValue);
-
-                return System.Linq.Expressions.Expression.Call(instance, methodInfo, argument);
+                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
             public static MethodCallExpression EndsWithExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
                 var methodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
                 if (methodInfo == null)
                     throw new ArgumentOutOfRangeException(nameof(methodInfo), propertyName);
 
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                var instance = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var argument = System.Linq.Expressions.Expression.Constant(constantValue);
-
-                return System.Linq.Expressions.Expression.Call(instance, methodInfo, argument);
+                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
             public static MethodCallExpression ContainsExpression(ParameterExpression parameter, string propertyName, object value)
             {
-                var documentType = typeof(TQueryable);
-
                 var methodInfo = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
                 if (methodInfo == null)
                     throw new ArgumentOutOfRangeException(nameof(methodInfo), propertyName);
 
-                Expression bodyLeft;
+                var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                if (propertyName.Split('.').Length > 1)
-                {
-                    bodyLeft = parameter;
-
-                    foreach (var property in propertyName.Split('.'))
-                    {
-                        bodyLeft = System.Linq.Expressions.Expression.PropertyOrField(bodyLeft, property);
-                    }
-
-                    var nestedArgument = System.Linq.Expressions.Expression.Constant(Convert.ChangeType(value, bodyLeft.Type));
-
-                    return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, nestedArgument);
-                }
-
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
-                var instance = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var constantValue = Convert.ChangeType(value, propertyInfo.PropertyType); //TODO
-
-                var argument = System.Linq.Expressions.Expression.Constant(constantValue);
-
-                return System.Linq.Expressions.Expression.Call(instance, methodInfo, argument);
+                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
             public static UnaryExpression NotContainsExpression(ParameterExpression parameter, string propertyName, object value)
@@ -642,11 +500,46 @@ namespace Smartiks.Framework.Data.Web
             }
 
 
+            private static (Expression bodyLeft, UnaryExpression bodyRight) GetBodyExpressions(ParameterExpression parameter, string propertyName, object value)
+            {
+                var documentType = typeof(TQueryable);
+
+                var propertyInfo = GetPropertyInfo(propertyName, documentType);
+
+                if (propertyName.Contains("."))
+                {
+                    var propertyNames = propertyName.Split('.');
+
+                    Expression nestedBodyLeft = parameter;
+
+                    foreach (var property in propertyNames)
+                    {
+                        nestedBodyLeft = System.Linq.Expressions.Expression.Property(nestedBodyLeft, property);
+                    }
+
+                    var nestedBodyRight = System.Linq.Expressions.Expression.Convert(
+                        System.Linq.Expressions.Expression.Constant(GetConstantValue(value, nestedBodyLeft.Type)),
+                        nestedBodyLeft.Type
+                    );
+
+                    return (nestedBodyLeft, nestedBodyRight);
+                }
+
+                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
+
+                var bodyRight = System.Linq.Expressions.Expression.Convert(
+                    System.Linq.Expressions.Expression.Constant(GetConstantValue(value, propertyInfo.PropertyType)),
+                    propertyInfo.PropertyType
+                );
+
+                return (bodyLeft, bodyRight);
+            }
+
+
             private static object GetConstantValue(object value, Type propertyType)
 			{
 				if (value == null)
-					return value;
-
+					return null;
 
 				var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
 
@@ -654,7 +547,7 @@ namespace Smartiks.Framework.Data.Web
 			}
 
 
-            private static void ThrowIsInvalidPropertyName(string propertyName, Type type)
+            private static PropertyInfo GetPropertyInfo(string propertyName, Type type)
             {
                 if (propertyName.Contains("."))
                 {
@@ -679,7 +572,11 @@ namespace Smartiks.Framework.Data.Web
 
                     if (propertyInfo == null)
                         throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
+
+                    return propertyInfo;
                 }
+
+                return null;
             }
         }
     }
