@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Smartiks.Framework.Data.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Smartiks.Framework.Data.Abstractions;
+using SystemExpression = System.Linq.Expressions.Expression;
 
 namespace Smartiks.Framework.Data.Web
 {
@@ -27,7 +28,6 @@ namespace Smartiks.Framework.Data.Web
             return Task.CompletedTask;
         }
 
-
         private bool TryGetQuery(ModelBindingContext bindingContext, out Query<TQueryable> query)
         {
             QueryCriteria<TQueryable> criteria = null;
@@ -44,7 +44,7 @@ namespace Smartiks.Framework.Data.Web
             {
                 orders = queryOrders;
             }
-            
+
 
             QuerySegment segment = null;
 
@@ -56,7 +56,8 @@ namespace Smartiks.Framework.Data.Web
 
             if (criteria != null || orders != null || segment != null)
             {
-                query = new Query<TQueryable> {
+                query = new Query<TQueryable>
+                {
                     Criteria = criteria,
                     Orders = orders,
                     Segment = segment
@@ -74,7 +75,8 @@ namespace Smartiks.Framework.Data.Web
         {
             if (TryGetFilter(bindingContext, "filter", out var filter))
             {
-                queryCriteria = new QueryCriteria<TQueryable> {
+                queryCriteria = new QueryCriteria<TQueryable>
+                {
                     Expression = filter.Expression
                 };
 
@@ -104,7 +106,8 @@ namespace Smartiks.Framework.Data.Web
                     filterIndex++;
                 }
 
-                filter = new KendoFilter {
+                filter = new KendoFilter
+                {
                     Logic = logic,
                     Filters = filters
                 };
@@ -114,7 +117,8 @@ namespace Smartiks.Framework.Data.Web
 
             if (TryGetFilterField(bindingContext, prefix, out var field) && TryGetFilterValue(bindingContext, prefix, out var value))
             {
-                filter = new KendoFilter {
+                filter = new KendoFilter
+                {
                     Field = field,
                     Operation = TryGetFilterOperation(bindingContext, prefix, out var operation) ? operation : null,
                     Value = value
@@ -237,12 +241,13 @@ namespace Smartiks.Framework.Data.Web
 
                 var delegateType = typeof(Func<,>).MakeGenericType(documentType, propertyInfo.PropertyType);
 
-                var parameter = Expression.Parameter(documentType, "queryable");
+                var parameter = SystemExpression.Parameter(documentType, "queryable");
 
-                var body = Expression.MakeMemberAccess(parameter, propertyInfo);
+                var body = SystemExpression.MakeMemberAccess(parameter, propertyInfo);
 
-                var queryOrder = new QueryOrder {
-                    Expression = Expression.Lambda(delegateType, body, parameter),
+                var queryOrder = new QueryOrder
+                {
+                    Expression = SystemExpression.Lambda(delegateType, body, parameter),
                     IsDescending = sortDirValue.Length == 1 && sortDirValue.FirstValue == "desc"
                 };
 
@@ -271,8 +276,8 @@ namespace Smartiks.Framework.Data.Web
             {
                 querySegment = new QuerySegment
                 {
-                    StartIndex = skipValue.Length > 0 ? (int) Convert.ChangeType(skipValue.FirstValue, TypeCode.Int32) : 0,
-                    Count = takeValue.Length > 0 ? (int?) Convert.ChangeType(takeValue.FirstValue, TypeCode.Int32) : null
+                    StartIndex = skipValue.Length > 0 ? (int)Convert.ChangeType(skipValue.FirstValue, TypeCode.Int32) : 0,
+                    Count = takeValue.Length > 0 ? (int?)Convert.ChangeType(takeValue.FirstValue, TypeCode.Int32) : null
                 };
 
                 return true;
@@ -283,13 +288,11 @@ namespace Smartiks.Framework.Data.Web
             return false;
         }
 
-
         private class KendoFilter
         {
             public string Logic { get; set; }
 
             public IEnumerable<KendoFilter> Filters { get; set; }
-
 
             public string Field { get; set; }
 
@@ -297,23 +300,21 @@ namespace Smartiks.Framework.Data.Web
 
             public object Value { get; set; }
 
-
             public Expression<Func<TQueryable, bool>> Expression
             {
                 get
                 {
                     var documentType = typeof(TQueryable);
 
-                    var parameter = System.Linq.Expressions.Expression.Parameter(documentType, "queryable");
+                    var parameter = SystemExpression.Parameter(documentType, "queryable");
 
                     var body = ToExpression(parameter, this);
 
-                    return System.Linq.Expressions.Expression.Lambda<Func<TQueryable, bool>>(body, parameter);
+                    return SystemExpression.Lambda<Func<TQueryable, bool>>(body, parameter);
                 }
             }
 
-
-            public static Expression ToExpression(ParameterExpression parameter, KendoFilter filter)
+            private static SystemExpression ToExpression(ParameterExpression parameter, KendoFilter filter)
             {
                 if (filter == null)
                     throw new ArgumentNullException(nameof(filter));
@@ -375,9 +376,9 @@ namespace Smartiks.Framework.Data.Web
                 }
             }
 
-            public static Expression AndAlsoExpression(ParameterExpression parameter, IEnumerable<KendoFilter> filters)
+            private static SystemExpression AndAlsoExpression(ParameterExpression parameter, IEnumerable<KendoFilter> filters)
             {
-                Expression body = null;
+                SystemExpression body = null;
 
                 foreach (var filter in filters)
                 {
@@ -388,15 +389,15 @@ namespace Smartiks.Framework.Data.Web
                         continue;
                     }
 
-                    body = System.Linq.Expressions.Expression.AndAlso(body, ToExpression(parameter, filter));
+                    body = SystemExpression.AndAlso(body, ToExpression(parameter, filter));
                 }
 
                 return body;
             }
 
-            public static Expression OrElseExpression(ParameterExpression parameter, IEnumerable<KendoFilter> filters)
+            private static SystemExpression OrElseExpression(ParameterExpression parameter, IEnumerable<KendoFilter> filters)
             {
-                Expression body = null;
+                SystemExpression body = null;
 
                 foreach (var filter in filters)
                 {
@@ -407,56 +408,55 @@ namespace Smartiks.Framework.Data.Web
                         continue;
                     }
 
-                    body = System.Linq.Expressions.Expression.OrElse(body, ToExpression(parameter, filter));
+                    body = SystemExpression.OrElse(body, ToExpression(parameter, filter));
                 }
 
                 return body;
             }
 
-
-            public static BinaryExpression EqualExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression EqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
+                return SystemExpression.Equal(bodyLeft, bodyRight);
             }
 
-            public static BinaryExpression NotEqualExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression NotEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.NotEqual(bodyLeft, bodyRight);
+                return SystemExpression.NotEqual(bodyLeft, bodyRight);
             }
 
-            public static BinaryExpression LessThanExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression LessThanExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.LessThan(bodyLeft, bodyRight);
+                return SystemExpression.LessThan(bodyLeft, bodyRight);
             }
 
-            public static BinaryExpression LessThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression LessThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.LessThanOrEqual(bodyLeft, bodyRight);
+                return SystemExpression.LessThanOrEqual(bodyLeft, bodyRight);
             }
 
-            public static BinaryExpression GreaterThanExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression GreaterThanExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.GreaterThan(bodyLeft, bodyRight);
+                return SystemExpression.GreaterThan(bodyLeft, bodyRight);
             }
 
-            public static BinaryExpression GreaterThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
+            private static BinaryExpression GreaterThanOrEqualExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.GreaterThanOrEqual(bodyLeft, bodyRight);
+                return SystemExpression.GreaterThanOrEqual(bodyLeft, bodyRight);
             }
 
-            public static MethodCallExpression StartsWithExpression(ParameterExpression parameter, string propertyName, object value)
+            private static MethodCallExpression StartsWithExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var methodInfo = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
 
@@ -465,10 +465,10 @@ namespace Smartiks.Framework.Data.Web
 
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
+                return SystemExpression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
-            public static MethodCallExpression EndsWithExpression(ParameterExpression parameter, string propertyName, object value)
+            private static MethodCallExpression EndsWithExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var methodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
@@ -477,10 +477,10 @@ namespace Smartiks.Framework.Data.Web
 
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
+                return SystemExpression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
-            public static MethodCallExpression ContainsExpression(ParameterExpression parameter, string propertyName, object value)
+            private static MethodCallExpression ContainsExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var methodInfo = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
@@ -489,94 +489,75 @@ namespace Smartiks.Framework.Data.Web
 
                 var (bodyLeft, bodyRight) = GetBodyExpressions(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, bodyRight);
+                return SystemExpression.Call(bodyLeft, methodInfo, bodyRight);
             }
 
-            public static UnaryExpression NotContainsExpression(ParameterExpression parameter, string propertyName, object value)
+            private static UnaryExpression NotContainsExpression(ParameterExpression parameter, string propertyName, object value)
             {
                 var expression = ContainsExpression(parameter, propertyName, value);
 
-                return System.Linq.Expressions.Expression.Not(expression);
+                return SystemExpression.Not(expression);
             }
 
-
-            private static (Expression bodyLeft, UnaryExpression bodyRight) GetBodyExpressions(ParameterExpression parameter, string propertyName, object value)
+            private static (SystemExpression, UnaryExpression) GetBodyExpressions(ParameterExpression parameter, string propertyName, object value)
             {
                 var documentType = typeof(TQueryable);
 
-                var propertyInfo = GetPropertyInfo(propertyName, documentType);
-
                 if (propertyName.Contains("."))
                 {
+                    var propertyType = documentType;
+
                     var propertyNames = propertyName.Split('.');
 
-                    Expression nestedBodyLeft = parameter;
+                    SystemExpression bodyLeft = parameter;
 
                     foreach (var property in propertyNames)
                     {
-                        nestedBodyLeft = System.Linq.Expressions.Expression.Property(nestedBodyLeft, property);
-                    }
+                        var propertyInfo = propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
-                    var nestedBodyRight = System.Linq.Expressions.Expression.Convert(
-                        System.Linq.Expressions.Expression.Constant(GetConstantValue(value, nestedBodyLeft.Type)),
-                        nestedBodyLeft.Type
-                    );
-
-                    return (nestedBodyLeft, nestedBodyRight);
-                }
-
-                var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
-
-                var bodyRight = System.Linq.Expressions.Expression.Convert(
-                    System.Linq.Expressions.Expression.Constant(GetConstantValue(value, propertyInfo.PropertyType)),
-                    propertyInfo.PropertyType
-                );
-
-                return (bodyLeft, bodyRight);
-            }
-
-
-            private static object GetConstantValue(object value, Type propertyType)
-			{
-				if (value == null)
-					return null;
-
-				var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-
-				return Convert.ChangeType(value, type);
-			}
-
-
-            private static PropertyInfo GetPropertyInfo(string propertyName, Type type)
-            {
-                if (propertyName.Contains("."))
-                {
-                    var propertyType = type;
-
-                    var propertyNames = propertyName.Split('.');
-
-                    var propertyInfos = propertyNames.Select(property => propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase));
-
-                    foreach (var propertyInfo in propertyInfos)
-                    {
                         if (propertyInfo == null)
                             throw new ArgumentOutOfRangeException(nameof(propertyInfo), propertyName);
 
                         propertyType = propertyInfo.PropertyType;
-                    }
-                }
 
+                        bodyLeft = SystemExpression.Property(bodyLeft, property);
+                    }
+
+                    var bodyRight =
+                        SystemExpression.Convert(
+                            SystemExpression.Constant(GetConstantValue(value, bodyLeft.Type)),
+                            bodyLeft.Type
+                        );
+
+                    return (bodyLeft, bodyRight);
+                }
                 else
                 {
-                    var propertyInfo = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+                    var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
                     if (propertyInfo == null)
                         throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
 
-                    return propertyInfo;
-                }
+                    var bodyLeft = SystemExpression.MakeMemberAccess(parameter, propertyInfo);
 
-                return null;
+                    var bodyRight =
+                        SystemExpression.Convert(
+                            SystemExpression.Constant(GetConstantValue(value, propertyInfo.PropertyType)),
+                            propertyInfo.PropertyType
+                        );
+
+                    return (bodyLeft, bodyRight);
+                }
+            }
+
+            private static object GetConstantValue(object value, Type propertyType)
+            {
+                if (value == null)
+                    return null;
+
+                var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+                return Convert.ChangeType(value, type);
             }
         }
     }
