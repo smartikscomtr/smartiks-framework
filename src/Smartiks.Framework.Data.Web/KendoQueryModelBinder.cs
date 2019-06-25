@@ -420,7 +420,7 @@ namespace Smartiks.Framework.Data.Web
                 ThrowIsInvalidPropertyName(propertyName, documentType);
 
 
-                if (propertyName.Contains("."))
+				if (propertyName.Contains("."))
                 {
                     var propertyNames = propertyName.Split('.');
 
@@ -431,37 +431,23 @@ namespace Smartiks.Framework.Data.Web
                         nestedBodyLeft = System.Linq.Expressions.Expression.Property(nestedBodyLeft, property);
                     }
 
-                    var nestedBodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(value), nestedBodyLeft.Type);
-
-                    if (nestedBodyLeft.Type != nestedBodyRight.Type)
-                    {
-                        var nullableType = Nullable.GetUnderlyingType(nestedBodyLeft.Type);
-
-                        if (nullableType != null)
-                            nestedBodyRight = System.Linq.Expressions.Expression.Convert(nestedBodyRight, nestedBodyLeft.Type);
-
-                        else
-                            nestedBodyLeft = System.Linq.Expressions.Expression.Convert(nestedBodyLeft, nestedBodyRight.Type);
-                    }
+					var nestedBodyRight = System.Linq.Expressions.Expression.Convert(
+                        System.Linq.Expressions.Expression.Constant(GetConstantValue(value, nestedBodyLeft.Type)),
+                        nestedBodyLeft.Type
+                    );
 
                     return System.Linq.Expressions.Expression.Equal(nestedBodyLeft, nestedBodyRight);
                 }
 
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
+                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
 
                 var bodyLeft = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
 
-                object constantValue = null;
-
-                var type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-
-                if (value != null)
-                {
-                    constantValue = Convert.ChangeType(value, type);
-                }
-
-                var bodyRight = System.Linq.Expressions.Expression.Convert(System.Linq.Expressions.Expression.Constant(constantValue), propertyInfo.PropertyType);
+				var bodyRight = System.Linq.Expressions.Expression.Convert(
+                    System.Linq.Expressions.Expression.Constant(GetConstantValue(value, propertyInfo.PropertyType)),
+                    propertyInfo.PropertyType
+                );
 
                 return System.Linq.Expressions.Expression.Equal(bodyLeft, bodyRight);
             }
@@ -613,16 +599,31 @@ namespace Smartiks.Framework.Data.Web
             {
                 var documentType = typeof(TQueryable);
 
-                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
-
                 var methodInfo = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
                 if (methodInfo == null)
                     throw new ArgumentOutOfRangeException(nameof(methodInfo), propertyName);
 
+                Expression bodyLeft;
+
+                if (propertyName.Split('.').Length > 1)
+                {
+                    bodyLeft = parameter;
+
+                    foreach (var property in propertyName.Split('.'))
+                    {
+                        bodyLeft = System.Linq.Expressions.Expression.PropertyOrField(bodyLeft, property);
+                    }
+
+                    var nestedArgument = System.Linq.Expressions.Expression.Constant(Convert.ChangeType(value, bodyLeft.Type));
+
+                    return System.Linq.Expressions.Expression.Call(bodyLeft, methodInfo, nestedArgument);
+                }
+
+                var propertyInfo = documentType.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+
+                if (propertyInfo == null)
+                    throw new ArgumentOutOfRangeException(nameof(propertyName), propertyName);
 
                 var instance = System.Linq.Expressions.Expression.MakeMemberAccess(parameter, propertyInfo);
 
@@ -639,6 +640,18 @@ namespace Smartiks.Framework.Data.Web
 
                 return System.Linq.Expressions.Expression.Not(expression);
             }
+
+
+            private static object GetConstantValue(object value, Type propertyType)
+			{
+				if (value == null)
+					return value;
+
+
+				var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+				return Convert.ChangeType(value, type);
+			}
 
 
             private static void ThrowIsInvalidPropertyName(string propertyName, Type type)
