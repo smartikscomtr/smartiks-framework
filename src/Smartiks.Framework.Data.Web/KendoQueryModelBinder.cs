@@ -233,28 +233,65 @@ namespace Smartiks.Framework.Data.Web
 
                 var documentType = typeof(TQueryable);
 
-                var propertyInfo = documentType.GetProperty(sortFieldValue.FirstValue, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-
-                if (propertyInfo == null)
-                    throw new ArgumentOutOfRangeException(nameof(sortFieldValue), sortFieldValue.FirstValue, null);
-
-
-                var delegateType = typeof(Func<,>).MakeGenericType(documentType, propertyInfo.PropertyType);
-
                 var parameter = SystemExpression.Parameter(documentType, "queryable");
 
-                var body = SystemExpression.MakeMemberAccess(parameter, propertyInfo);
-
-                var queryOrder = new QueryOrder
+                if (sortFieldValue.FirstValue.Contains("."))
                 {
-                    Expression = SystemExpression.Lambda(delegateType, body, parameter),
-                    IsDescending = sortDirValue.Length == 1 && sortDirValue.FirstValue == "desc"
-                };
+                    var propertyType = documentType;
 
-                queryOrders.Add(queryOrder);
+                    var propertyNames = sortFieldValue.FirstValue.Split('.');
+
+                    SystemExpression body = parameter;
+
+                    foreach (var property in propertyNames)
+                    {
+                        var propertyInfo = propertyType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+
+                        if (propertyInfo == null)
+                            throw new ArgumentOutOfRangeException(nameof(propertyInfo), sortFieldValue.FirstValue);
+
+                        propertyType = propertyInfo.PropertyType;
+
+                        body = SystemExpression.Property(body, property);
+                    }
+
+                    var delegateType = typeof(Func<,>).MakeGenericType(documentType, propertyType);
+
+                    var queryOrder = new QueryOrder
+                    {
+                        Expression = SystemExpression.Lambda(delegateType, body, parameter),
+                        IsDescending = sortDirValue.Length == 1 && sortDirValue.FirstValue == "desc"
+                    };
+
+                    queryOrders.Add(queryOrder);
 
 
-                sortIndex++;
+                    sortIndex++;
+                }
+
+                else
+                {
+                    var propertyInfo = documentType.GetProperty(sortFieldValue.FirstValue, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+
+                    if (propertyInfo == null)
+                        throw new ArgumentOutOfRangeException(nameof(sortFieldValue), sortFieldValue.FirstValue, null);
+
+
+                    var delegateType = typeof(Func<,>).MakeGenericType(documentType, propertyInfo.PropertyType);
+
+                    var body = SystemExpression.MakeMemberAccess(parameter, propertyInfo);
+
+                    var queryOrder = new QueryOrder
+                    {
+                        Expression = SystemExpression.Lambda(delegateType, body, parameter),
+                        IsDescending = sortDirValue.Length == 1 && sortDirValue.FirstValue == "desc"
+                    };
+
+                    queryOrders.Add(queryOrder);
+
+
+                    sortIndex++;
+                }
             }
 
             return queryOrders.Count > 0;
