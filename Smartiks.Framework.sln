@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BBF79612-FC72-404C-819A-52D4A796910D}"
 	ProjectSection(SolutionItems) = preProject
@@ -65,23 +65,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Web.Extensions", "src\Smartiks.Framework.Identity.Authentication.Web.Extensions\Smartiks.Framework.Identity.Authentication.Web.Extensions.csproj", "{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Owin.Extensions", "src\Smartiks.Framework.Identity.Authentication.Owin.Extensions\Smartiks.Framework.Identity.Authentication.Owin.Extensions.csproj", "{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Owin.Abstractions", "src\Smartiks.Framework.Identity.Authentication.Owin.Abstractions\Smartiks.Framework.Identity.Authentication.Owin.Abstractions.csproj", "{1F373A7C-1C19-4DC9-858A-F4260AD0828A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity.Authentication.Web.App", "examples\Smartiks.Framework.Identity.Authentication.Web.App\Smartiks.Framework.Identity.Authentication.Web.App.csproj", "{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.Identity.Authentication.Owin.App", "examples\Smartiks.Framework.Identity.Authentication.Owin.App\Smartiks.Framework.Identity.Authentication.Owin.App.csproj", "{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Abstractions", "src\Smartiks.Framework.Data.Abstractions\Smartiks.Framework.Data.Abstractions.csproj", "{D1E82BB2-52D8-495B-9FE5-83D437B5E1F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Abstractions", "src\Smartiks.Framework.Data.Abstractions\Smartiks.Framework.Data.Abstractions.csproj", "{79CFD8D1-92FF-421D-A450-2903681292D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework", "src\Smartiks.Framework.Data.EntityFramework\Smartiks.Framework.Data.EntityFramework.csproj", "{016CE04F-432C-41E1-8DFD-A9AA7AFFEF54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework", "src\Smartiks.Framework.Data.EntityFramework\Smartiks.Framework.Data.EntityFramework.csproj", "{35ADB6FF-69F2-45A8-87E0-2F32232BBD74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework.Web", "src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj", "{B9C21D6D-FD9C-4667-BCC0-C435F03F866D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework.Web", "src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj", "{2AF659AD-AA93-41D9-A7AB-251D534E7E6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Extensions", "src\Smartiks.Framework.Data.Extensions\Smartiks.Framework.Data.Extensions.csproj", "{82D000D9-6EB1-4083-909C-5C9B13519D71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Extensions", "src\Smartiks.Framework.Data.Extensions\Smartiks.Framework.Data.Extensions.csproj", "{2B81B199-85C1-4D64-A84E-4611AEE0493D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Web", "src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj", "{3698E1C6-C5D2-48FE-81A2-7DF8FF695478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Web", "src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj", "{2112519F-2742-4986-A83D-C6FD409CDDA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -193,42 +187,30 @@ Global
 		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A21445-7704-4A5F-B3C6-A9BBD4E6ED0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{076B12B8-30F0-4625-BD9D-A4C9840CB8E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F373A7C-1C19-4DC9-858A-F4260AD0828A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79CFD8D1-92FF-421D-A450-2903681292D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79CFD8D1-92FF-421D-A450-2903681292D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79CFD8D1-92FF-421D-A450-2903681292D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79CFD8D1-92FF-421D-A450-2903681292D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35ADB6FF-69F2-45A8-87E0-2F32232BBD74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35ADB6FF-69F2-45A8-87E0-2F32232BBD74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35ADB6FF-69F2-45A8-87E0-2F32232BBD74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35ADB6FF-69F2-45A8-87E0-2F32232BBD74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AF659AD-AA93-41D9-A7AB-251D534E7E6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AF659AD-AA93-41D9-A7AB-251D534E7E6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AF659AD-AA93-41D9-A7AB-251D534E7E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AF659AD-AA93-41D9-A7AB-251D534E7E6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B81B199-85C1-4D64-A84E-4611AEE0493D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B81B199-85C1-4D64-A84E-4611AEE0493D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B81B199-85C1-4D64-A84E-4611AEE0493D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B81B199-85C1-4D64-A84E-4611AEE0493D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3698E1C6-C5D2-48FE-81A2-7DF8FF695478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3698E1C6-C5D2-48FE-81A2-7DF8FF695478}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3698E1C6-C5D2-48FE-81A2-7DF8FF695478}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3698E1C6-C5D2-48FE-81A2-7DF8FF695478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E82BB2-52D8-495B-9FE5-83D437B5E1F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E82BB2-52D8-495B-9FE5-83D437B5E1F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E82BB2-52D8-495B-9FE5-83D437B5E1F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E82BB2-52D8-495B-9FE5-83D437B5E1F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016CE04F-432C-41E1-8DFD-A9AA7AFFEF54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016CE04F-432C-41E1-8DFD-A9AA7AFFEF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016CE04F-432C-41E1-8DFD-A9AA7AFFEF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016CE04F-432C-41E1-8DFD-A9AA7AFFEF54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9C21D6D-FD9C-4667-BCC0-C435F03F866D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C21D6D-FD9C-4667-BCC0-C435F03F866D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C21D6D-FD9C-4667-BCC0-C435F03F866D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C21D6D-FD9C-4667-BCC0-C435F03F866D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D000D9-6EB1-4083-909C-5C9B13519D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D000D9-6EB1-4083-909C-5C9B13519D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D000D9-6EB1-4083-909C-5C9B13519D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D000D9-6EB1-4083-909C-5C9B13519D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2112519F-2742-4986-A83D-C6FD409CDDA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2112519F-2742-4986-A83D-C6FD409CDDA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2112519F-2742-4986-A83D-C6FD409CDDA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2112519F-2742-4986-A83D-C6FD409CDDA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,7 +220,6 @@ Global
 		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
 		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
-		{20D21E37-AB2D-4522-9ECA-8BB8E3B72A7A} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}
