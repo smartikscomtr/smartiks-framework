@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
+    <Product>Smartiks.Framework.Text.Abstractions</Product>
     <Description>Smartiks.Framework.Text.Abstractions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
