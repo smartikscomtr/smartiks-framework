@@ -1,33 +1,54 @@
 ﻿using Mustache;
-using System;
 using Smartiks.Framework.Text.Abstractions;
+using System;
+using System.Globalization;
 
 namespace Smartiks.Framework.Text
 {
     public class MustacheTemplateService : ITemplateService
     {
-        protected FormatCompiler FormatCompiler { get; set; } = new FormatCompiler();
+        protected FormatCompiler FormatCompiler { get; }
 
         public MustacheTemplateService()
         {
+            FormatCompiler =
+                new FormatCompiler
+                {
+                    AreExtensionTagsAllowed = true,
+                    RemoveNewLines = true
+                };
         }
 
-        public string Format<TContext>(string template, TContext context, Func<String, String> escaper, IFormatProvider formatProvider)
+        public string Format<TContext>(string template, TContext context, Func<string, string> transform, IFormatProvider formatProvider)
         {
-            FormatCompiler.AreExtensionTagsAllowed = true;
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
 
-            FormatCompiler.RemoveNewLines = true;
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
+            if (transform == null)
+            {
+                transform = s => s;
+            }
+
+            if (formatProvider == null)
+            {
+                formatProvider = CultureInfo.CurrentCulture;
+            }
 
             var generator = FormatCompiler.Compile(template);
 
             generator.TagFormatted +=
-                delegate(object sender, TagFormattedEventArgs args) {
-
+                (sender, args) => {
                     if (args.IsExtension)
                         return;
 
-                    args.Substitute = escaper(args.Substitute);
+                    args.Substitute = transform.Invoke(args.Substitute);
                 };
 
             return generator.Render(formatProvider, context);
