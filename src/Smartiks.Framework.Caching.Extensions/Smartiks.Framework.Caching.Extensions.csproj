@@ -2,18 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Murat Atay</Authors>
+    <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
     <Product>Smartiks.Framework.Caching.Extensions</Product>
     <Description>Smartiks.Framework.Caching.Extensions</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MessagePack" Version="1.7.3.4" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.2" />
+    <PackageReference Include="MessagePack" Version="1.8.74" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
