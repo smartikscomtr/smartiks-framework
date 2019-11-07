@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Murat Atay</Authors>
+    <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
+    <Product>Smartiks.Framework.Data.EntityFramework.Web</Product>
     <Description>Smartiks.Framework.Data.EntityFramework.Web</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
