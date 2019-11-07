@@ -10,6 +10,8 @@
 
 ### Smartiks.Framework.Data.EntityFramework [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.EntityFramework.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.EntityFramework)
 
+### Smartiks.Framework.Data.EntityFramework.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.EntityFramework.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.EntityFramework.Abstractions)
+
 ### Smartiks.Framework.Data.Extensions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.Extensions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.Extensions)
 
 ### Smartiks.Framework.Data.Web [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.Web.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.Web)
