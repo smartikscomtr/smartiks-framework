@@ -23,13 +23,13 @@ namespace Smartiks.Framework.Hosting.Abstractions
         /// </summary>
         /// <param name="cancellationToken">Triggered when <see cref="IHostedService.StopAsync(CancellationToken)"/> is called.</param>
         /// <returns>A <see cref="Task"/> that represents the long running operations.</returns>
-        protected abstract Task ExecuteAsync(CancellationToken token);
+        protected abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Triggered when the application host is ready to start the service.
         /// </summary>
         /// <param name="cancellationToken">Indicates that the start process has been aborted.</param>
-        public virtual Task StartAsync(CancellationToken token)
+        public virtual Task StartAsync(CancellationToken cancellationToken)
         {
             // Store the task we're executing
             executingTask = ExecuteAsync(cancellationTokenSource.Token);
@@ -48,7 +48,7 @@ namespace Smartiks.Framework.Hosting.Abstractions
         /// Triggered when the application host is performing a graceful shutdown.
         /// </summary>
         /// <param name="cancellationToken">Indicates that the shutdown process should no longer be graceful.</param>
-        public virtual async Task StopAsync(CancellationToken token)
+        public virtual async Task StopAsync(CancellationToken cancellationToken)
         {
             // Stop called without start
             if (executingTask == null)
@@ -62,7 +62,7 @@ namespace Smartiks.Framework.Hosting.Abstractions
             finally
             {
                 // Wait until the task completes or the stop token triggers
-                await Task.WhenAny(executingTask, Task.Delay(Timeout.Infinite, token));
+                await Task.WhenAny(executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
             }
         }
 
