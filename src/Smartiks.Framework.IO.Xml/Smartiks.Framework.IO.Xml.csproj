@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
+    <Authors>Murat Atay, Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
     <Product>Smartiks.Framework.IO.Xml</Product>
     <Description>Smartiks.Framework.IO.Xml</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.1</Version>
+    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

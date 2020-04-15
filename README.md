@@ -16,8 +16,6 @@
 
 ### Smartiks.Framework.Data.Web [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.Web.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.Web)
 
-### Smartiks.Framework.Hosting.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Abstractions)
-
 ### Smartiks.Framework.Hosting.Web.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Web.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Web.Abstractions)
 
 ### Smartiks.Framework.Hosting.Web [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Web.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Web)
