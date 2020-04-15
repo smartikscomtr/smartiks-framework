@@ -14,6 +14,7 @@ namespace Smartiks.Framework.Data.App.Controllers
     {
         public HomeController(ContextRepository<DataContext, Employee, Query<Employee>, int> repository) : base(repository)
         {
+
         }
     }
 }
