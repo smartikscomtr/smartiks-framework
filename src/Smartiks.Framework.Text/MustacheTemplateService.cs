@@ -19,9 +19,6 @@ namespace Smartiks.Framework.Text
                 };
         }
 
-
-
-
         public string Format<TContext>(string template, TContext context, Func<string, string> transform, IFormatProvider formatProvider)
         {
             if (template == null)
