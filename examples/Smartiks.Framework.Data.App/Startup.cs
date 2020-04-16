@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -21,28 +20,19 @@ namespace Smartiks.Framework.Data.App
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(
-                options => options.UseSqlServer("Server=GURKANKESEBIR\\SQLEXPRESS;Database=SMARTIKS_DATA;Integrated Security=True;MultipleActiveResultSets=True;")
+                options => options.UseSqlServer(Configuration.GetConnectionString("DataContext"))
             );
-
-            var mapperConfiguration =
-               new MapperConfiguration(
-                   configure => configure.AddProfile(new MapperProfile())
-               );
-
-            var mapper = mapperConfiguration.CreateMapper();
-
-            services.AddSingleton(mapper);
 
             services.AddScoped<ContextRepository<DataContext, Employee, Query<Employee>, int>>();
 
