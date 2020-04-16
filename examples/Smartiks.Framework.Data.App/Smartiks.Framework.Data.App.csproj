@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj" />
-    <ProjectReference Include="..\src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj" />
+    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj" />
+    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj" />
   </ItemGroup>
 
 
