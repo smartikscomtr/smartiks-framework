@@ -30,6 +30,10 @@ namespace Smartiks.Framework.Identity.Data
 
         public DbSet<PersistedGrant> PersistedGrants { get; set; }
 
+        public DbSet<ClientCorsOrigin> ClientCorsOrigins { get; set; }
+
+        public DbSet<ApiScope> ApiScopes { get; set; }
+
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -161,7 +165,9 @@ namespace Smartiks.Framework.Identity.Data
                 grant.Property(x => x.Key).HasMaxLength(200).ValueGeneratedNever();
                 grant.Property(x => x.Type).HasMaxLength(50).IsRequired();
                 grant.Property(x => x.SubjectId).HasMaxLength(200);
+                grant.Property(x => x.SessionId).HasMaxLength(100);
                 grant.Property(x => x.ClientId).HasMaxLength(200).IsRequired();
+                grant.Property(x => x.Description).HasMaxLength(200);
                 grant.Property(x => x.CreationTime).IsRequired();
                 // 50000 chosen to be explicit to allow enough size to avoid truncation, yet stay beneath the MySql row size limit of ~65K
                 // apparently anything over 4K converts to nvarchar(max) on SqlServer
@@ -170,6 +176,8 @@ namespace Smartiks.Framework.Identity.Data
                 grant.HasKey(x => x.Key);
 
                 grant.HasIndex(x => new { x.SubjectId, x.ClientId, x.Type });
+                grant.HasIndex(x => new { x.SubjectId, x.SessionId, x.Type });
+                grant.HasIndex(x => x.Expiration);
             });
 
             modelBuilder.Entity<DeviceFlowCodes>(codes =>
@@ -179,7 +187,9 @@ namespace Smartiks.Framework.Identity.Data
                 codes.Property(x => x.DeviceCode).HasMaxLength(200).IsRequired();
                 codes.Property(x => x.UserCode).HasMaxLength(200).IsRequired();
                 codes.Property(x => x.SubjectId).HasMaxLength(200);
+                codes.Property(x => x.SessionId).HasMaxLength(100);
                 codes.Property(x => x.ClientId).HasMaxLength(200).IsRequired();
+                codes.Property(x => x.Description).HasMaxLength(200);
                 codes.Property(x => x.CreationTime).IsRequired();
                 codes.Property(x => x.Expiration).IsRequired();
                 // 50000 chosen to be explicit to allow enough size to avoid truncation, yet stay beneath the MySql row size limit of ~65K
@@ -189,11 +199,12 @@ namespace Smartiks.Framework.Identity.Data
                 codes.HasKey(x => new { x.UserCode });
 
                 codes.HasIndex(x => x.DeviceCode).IsUnique();
+                codes.HasIndex(x => x.Expiration);
             });
 
             modelBuilder.Entity<IdentityResource>(identityResource =>
             {
-                identityResource.ToTable("IdentityResources");
+                identityResource.ToTable("IdentityResources").HasKey(x => x.Id);
 
                 identityResource.Property(x => x.Name).HasMaxLength(200).IsRequired();
                 identityResource.Property(x => x.DisplayName).HasMaxLength(200);
@@ -205,9 +216,9 @@ namespace Smartiks.Framework.Identity.Data
                 identityResource.HasMany(x => x.Properties).WithOne(x => x.IdentityResource).HasForeignKey(x => x.IdentityResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<IdentityClaim>(claim =>
+            modelBuilder.Entity<IdentityResourceClaim>(claim =>
             {
-                claim.ToTable("IdentityClaims");
+                claim.ToTable("IdentityResourceClaims").HasKey(x => x.Id);
 
                 claim.Property(x => x.Type).HasMaxLength(200).IsRequired();
             });
@@ -215,18 +226,18 @@ namespace Smartiks.Framework.Identity.Data
             modelBuilder.Entity<IdentityResourceProperty>(property =>
             {
                 property.ToTable("IdentityResourceProperties");
-
                 property.Property(x => x.Key).HasMaxLength(250).IsRequired();
                 property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
             });
 
             modelBuilder.Entity<ApiResource>(apiResource =>
             {
-                apiResource.ToTable("ApiResources");
+                apiResource.ToTable("ApiResources").HasKey(x => x.Id);
 
                 apiResource.Property(x => x.Name).HasMaxLength(200).IsRequired();
                 apiResource.Property(x => x.DisplayName).HasMaxLength(200);
                 apiResource.Property(x => x.Description).HasMaxLength(1000);
+                apiResource.Property(x => x.AllowedAccessTokenSigningAlgorithms).HasMaxLength(100);
 
                 apiResource.HasIndex(x => x.Name).IsUnique();
 
@@ -236,9 +247,9 @@ namespace Smartiks.Framework.Identity.Data
                 apiResource.HasMany(x => x.Properties).WithOne(x => x.ApiResource).HasForeignKey(x => x.ApiResourceId).IsRequired().OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<ApiSecret>(apiSecret =>
+            modelBuilder.Entity<ApiResourceSecret>(apiSecret =>
             {
-                apiSecret.ToTable("ApiSecrets");
+                apiSecret.ToTable("ApiResourceSecrets");
 
                 apiSecret.Property(x => x.Description).HasMaxLength(1000);
                 apiSecret.Property(x => x.Value).HasMaxLength(4000).IsRequired();
@@ -247,34 +258,49 @@ namespace Smartiks.Framework.Identity.Data
 
             modelBuilder.Entity<ApiResourceClaim>(apiClaim =>
             {
-                apiClaim.ToTable("ApiResourceClaims");
+                apiClaim.ToTable("ApiResourceClaims").HasKey(x => x.Id);
 
                 apiClaim.Property(x => x.Type).HasMaxLength(200).IsRequired();
             });
 
-            modelBuilder.Entity<ApiScope>(apiScope =>
+            modelBuilder.Entity<ApiResourceScope>(apiScope =>
             {
-                apiScope.ToTable("ApiScopes");
+                apiScope.ToTable("ApiResourceScopes").HasKey(x => x.Id);
 
-                apiScope.Property(x => x.Name).HasMaxLength(200).IsRequired();
-                apiScope.Property(x => x.DisplayName).HasMaxLength(200);
-                apiScope.Property(x => x.Description).HasMaxLength(1000);
-
-                apiScope.HasIndex(x => x.Name).IsUnique();
-
-                apiScope.HasMany(x => x.UserClaims).WithOne(x => x.ApiScope).HasForeignKey(x => x.ApiScopeId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<ApiScopeClaim>(apiScopeClaim =>
-            {
-                apiScopeClaim.ToTable("ApiScopeClaims");
-
-                apiScopeClaim.Property(x => x.Type).HasMaxLength(200).IsRequired();
+                apiScope.Property(x => x.Scope).HasMaxLength(200).IsRequired();
             });
 
             modelBuilder.Entity<ApiResourceProperty>(property =>
             {
                 property.ToTable("ApiResourceProperties");
+
+                property.Property(x => x.Key).HasMaxLength(250).IsRequired();
+                property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
+            });
+
+            modelBuilder.Entity<ApiScope>(scope =>
+            {
+                scope.ToTable("ApiScopes").HasKey(x => x.Id);
+
+                scope.Property(x => x.Name).HasMaxLength(200).IsRequired();
+                scope.Property(x => x.DisplayName).HasMaxLength(200);
+                scope.Property(x => x.Description).HasMaxLength(1000);
+
+                scope.HasIndex(x => x.Name).IsUnique();
+
+                scope.HasMany(x => x.UserClaims).WithOne(x => x.Scope).HasForeignKey(x => x.ScopeId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ApiScopeClaim>(scopeClaim =>
+            {
+                scopeClaim.ToTable("ApiScopeClaims").HasKey(x => x.Id);
+
+                scopeClaim.Property(x => x.Type).HasMaxLength(200).IsRequired();
+            });
+
+            modelBuilder.Entity<ApiScopeProperty>(property =>
+            {
+                property.ToTable("ApiScopeProperty").HasKey(x => x.Id);
 
                 property.Property(x => x.Key).HasMaxLength(250).IsRequired();
                 property.Property(x => x.Value).HasMaxLength(2000).IsRequired();
