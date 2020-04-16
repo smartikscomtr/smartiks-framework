@@ -34,10 +34,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Hosting.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Hosting.Web", "src\Smartiks.Framework.Hosting.Web\Smartiks.Framework.Hosting.Web.csproj", "{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net.Abstractions", "src\Smartiks.Framework.Net.Abstractions\Smartiks.Framework.Net.Abstractions.csproj", "{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net", "src\Smartiks.Framework.Net\Smartiks.Framework.Net.csproj", "{9804A4AA-62C5-4370-8F85-6C2B68F1B777}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml.Abstractions", "src\Smartiks.Framework.IO.Xml.Abstractions\Smartiks.Framework.IO.Xml.Abstractions.csproj", "{D2F894F0-F34E-40D7-B435-825687DBDE79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml", "src\Smartiks.Framework.IO.Xml\Smartiks.Framework.IO.Xml.csproj", "{6BC23412-0707-404C-AFB7-DB889C3F812B}"
@@ -132,14 +128,6 @@ Global
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
