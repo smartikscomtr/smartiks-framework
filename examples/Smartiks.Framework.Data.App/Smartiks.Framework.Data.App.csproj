@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>
@@ -16,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.EntityFramework\Smartiks.Framework.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj" />
     <ProjectReference Include="..\..\src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj" />
   </ItemGroup>
