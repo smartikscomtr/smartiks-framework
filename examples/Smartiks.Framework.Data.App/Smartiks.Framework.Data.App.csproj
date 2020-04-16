@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -16,8 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj" />
-    <ProjectReference Include="..\src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj" />
+    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.EntityFramework\Smartiks.Framework.Data.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.EntityFramework.Web\Smartiks.Framework.Data.EntityFramework.Web.csproj" />
+    <ProjectReference Include="..\..\src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj" />
   </ItemGroup>
 
 
