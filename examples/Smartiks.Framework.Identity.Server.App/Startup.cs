@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Smartiks.Framework.Identity.Data;
 using Smartiks.Framework.Identity.Data.Abstractions;
 using Smartiks.Framework.Identity.Server.Extensions;
+using System;
+using System.Security.Cryptography;
 
 namespace Smartiks.Framework.Identity.Server.App
 {
@@ -49,7 +49,11 @@ namespace Smartiks.Framework.Identity.Server.App
 
             services.AddScoped<Seeder>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

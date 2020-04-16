@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
@@ -10,12 +9,12 @@
     <Description>Smartiks.Framework.Identity.Data</Description>
     <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.2.0</Version>
+    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="2.5.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="2.5.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>
