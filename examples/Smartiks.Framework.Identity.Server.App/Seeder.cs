@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 using Smartiks.Framework.Identity.Data;
 using Smartiks.Framework.Identity.Data.Abstractions;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Identity.Server.App
 {
@@ -55,21 +54,26 @@ namespace Smartiks.Framework.Identity.Server.App
                         JwtClaimTypes.Email,
                         JwtClaimTypes.EmailVerified
                     },
-                    Scopes = {
-                        new Scope {
-                            Name = "api.full_access",
-                            DisplayName = "Full Access",
-                            Description = "Full Access to API"
-                        },
-                        new Scope {
-                            Name = "api.read_only",
-                            DisplayName = "Read-Only Access",
-                            Description = "Read-Only Access to API"
-                        }
-                    }
+                    Scopes = { "api.full_access", "api.read_only" }
                 }
             };
 
+
+            var apiScopes = new []
+            {
+                new ApiScope
+                {
+                    Name = "api.full_access",
+                    DisplayName = "Full Access",
+                    Description = "Full Access to API"
+                },
+                new ApiScope
+                {
+                    Name = "api.read_only",
+                    DisplayName = "Read-Only Access",
+                    Description = "Read-Only Access to API"
+                }
+            };
 
 
             var clients = new[] {
@@ -215,10 +219,16 @@ namespace Smartiks.Framework.Identity.Server.App
                 context.Clients.Add(client.ToEntity());
             }
 
+            foreach (var apiScope in apiScopes)
+            {
+                context.ApiScopes.Add(apiScope.ToEntity());
+            }
+
             await context.SaveChangesAsync();
 
 
-            var user = new User<int> {
+            var user = new User<int>
+            {
                 UserName = "murat.atay",
                 Email = "murat.atay@yopmail.com",
                 EmailConfirmed = false,
