@@ -4,9 +4,6 @@ using Smartiks.Framework.Data.App.Data;
 using Smartiks.Framework.Data.App.Model;
 using Smartiks.Framework.Data.EntityFramework;
 using Smartiks.Framework.Data.EntityFramework.Web;
-using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Data.App.Controllers
 {
@@ -18,12 +15,5 @@ namespace Smartiks.Framework.Data.App.Controllers
         {
 
         }
-
-        public override Task<QueryResult<Employee>> Get(Query<Employee> query)
-        {
-            return base.Get(query);
-        }
-
-
     }
 }
