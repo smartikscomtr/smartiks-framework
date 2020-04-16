@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Smartiks.Framework.Data.Abstractions;
 using Smartiks.Framework.Data.Extensions;
@@ -17,13 +16,10 @@ namespace Smartiks.Framework.Data.EntityFramework
     {
         protected TContext Context { get; }
 
-        private readonly IMapper _mapper;
 
-        protected ReadOnlyContextRepository(TContext context, IMapper mapper)
+        protected ReadOnlyContextRepository(TContext context)
         {
             Context = context;
-
-            _mapper = mapper;
         }
 
         protected abstract IQueryable<TQueryable> GetQueryable();
@@ -35,7 +31,7 @@ namespace Smartiks.Framework.Data.EntityFramework
                 GetQueryable()
                     .Where(q => q.Id.Equals(id));
 
-            return await queryable.ProjectTo<TModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+            return await queryable.ProjectToType<TModel>().FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<QueryResult<TModel>> GetAsync<TModel>(TListQuery query, CancellationToken cancellationToken)
@@ -72,7 +68,7 @@ namespace Smartiks.Framework.Data.EntityFramework
                 }
             }
 
-            queryResult.Items = await queryable.ProjectTo<TModel>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+            queryResult.Items = await queryable.ProjectToType<TModel>().ToListAsync(cancellationToken);
 
             return queryResult;
         }
