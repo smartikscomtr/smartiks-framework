@@ -76,6 +76,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework.Abstractions", "src\Smartiks.Framework.Data.EntityFramework.Abstractions\Smartiks.Framework.Data.EntityFramework.Abstractions.csproj", "{7427BED7-40A8-4D06-94B1-70DFEC6B0342}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.App", "examples\Smartiks.Framework.Data.App\Smartiks.Framework.Data.App.csproj", "{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -210,6 +212,10 @@ Global
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +225,7 @@ Global
 		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
 		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}
