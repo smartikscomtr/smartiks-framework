@@ -19,30 +19,11 @@ namespace Smartiks.Framework.Data.App.Controllers
 
         }
 
-        public async override Task<Employee> Get(int id)
+        public override Task<QueryResult<Employee>> Get(Query<Employee> query)
         {
-            Expression<Func<Employee, string>> selectName = p => p.Name;
-
-            var query = new Query<Employee>
-            {
-                Segment = new QuerySegment
-                {
-                    Count = 2,
-                    StartIndex = 2
-                },
-                Orders = new System.Collections.Generic.List<QueryOrder>()
-                {
-                    new QueryOrder
-                    {
-                        IsDescending = true,
-                        Expression = selectName
-                    }
-                }
-            };
-
-            var a = await base.Get(query);
-
-            return await base.Get(id);
+            return base.Get(query);
         }
+
+
     }
 }
