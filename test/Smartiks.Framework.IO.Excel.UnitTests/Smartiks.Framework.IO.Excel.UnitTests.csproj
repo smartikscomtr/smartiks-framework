@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Smartiks.Framework.IO.Excel.Extensions\Smartiks.Framework.IO.Excel.Extensions.csproj" />
     <ProjectReference Include="..\..\src\Smartiks.Framework.IO.Excel\Smartiks.Framework.IO.Excel.csproj" />
-    <ProjectReference Include="..\..\src\Smartiks.Framework.Text\Smartiks.Framework.Text.csproj" />
   </ItemGroup>
 
   <ItemGroup>
