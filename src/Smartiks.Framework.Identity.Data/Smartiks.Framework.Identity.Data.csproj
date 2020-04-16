@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
+    <Authors>Murat Atay, Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
     <Product>Smartiks.Framework.Identity.Data</Product>
     <Description>Smartiks.Framework.Identity.Data</Description>
