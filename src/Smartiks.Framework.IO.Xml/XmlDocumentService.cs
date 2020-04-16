@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Smartiks.Framework.IO.Xml.Abstractions;
+using System;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Smartiks.Framework.IO.Xml.Abstractions;
 
 namespace Smartiks.Framework.IO.Xml
 {
     public class XmlDocumentService : IXmlDocumentService
     {
-        private XmlSerializerFactory xmlSerializerFactory;
+        private readonly XmlSerializerFactory _xmlSerializerFactory;
 
         public XmlDocumentService()
         {
-            xmlSerializerFactory = new XmlSerializerFactory();
+            _xmlSerializerFactory = new XmlSerializerFactory();
         }
 
         public Task<object> ReadAsync(XmlReader xmlReader, Type type)
@@ -23,7 +23,12 @@ namespace Smartiks.Framework.IO.Xml
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            var xmlSerializer = xmlSerializerFactory.CreateSerializer(type);
+            var xmlSerializer = _xmlSerializerFactory.CreateSerializer(type);
+
+            if (xmlSerializer == null)
+            {
+                throw new InvalidOperationException($"Cannot create serializer for type {type.FullName}");
+            }
 
             var result = xmlSerializer.Deserialize(xmlReader);
 
@@ -41,7 +46,12 @@ namespace Smartiks.Framework.IO.Xml
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            var xmlSerializer = xmlSerializerFactory.CreateSerializer(type);
+            var xmlSerializer = _xmlSerializerFactory.CreateSerializer(type);
+
+            if (xmlSerializer == null)
+            {
+                throw new InvalidOperationException($"Cannot create serializer for type {type.FullName}");
+            }
 
             xmlSerializer.Serialize(xmlWriter, document);
 

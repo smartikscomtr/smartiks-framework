@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Smartiks.Framework.IO.Xml.Abstractions;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using Smartiks.Framework.IO.Xml.Abstractions;
 
 namespace Smartiks.Framework.IO.Xml.Extensions
 {

@@ -7,6 +7,7 @@ namespace Smartiks.Framework.IO
     {
         public StringWriter()
         {
+            Encoding = new UnicodeEncoding(false, false);
         }
 
         public StringWriter(Encoding encoding)
@@ -16,6 +17,7 @@ namespace Smartiks.Framework.IO
 
         public StringWriter(IFormatProvider formatProvider) : base(formatProvider)
         {
+            Encoding = new UnicodeEncoding(false, false);
         }
 
         public StringWriter(Encoding encoding, IFormatProvider formatProvider) : base(formatProvider)
@@ -25,6 +27,7 @@ namespace Smartiks.Framework.IO
 
         public StringWriter(StringBuilder sb) : base(sb)
         {
+            Encoding = new UnicodeEncoding(false, false);
         }
 
         public StringWriter(StringBuilder sb, Encoding encoding) : base(sb)
@@ -34,6 +37,7 @@ namespace Smartiks.Framework.IO
 
         public StringWriter(StringBuilder sb, IFormatProvider formatProvider) : base(sb, formatProvider)
         {
+            Encoding = new UnicodeEncoding(false, false);
         }
 
         public StringWriter(StringBuilder sb, Encoding encoding, IFormatProvider formatProvider) : base(sb, formatProvider)

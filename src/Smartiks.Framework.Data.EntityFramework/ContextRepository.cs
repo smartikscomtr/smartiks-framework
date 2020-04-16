@@ -15,9 +15,13 @@ namespace Smartiks.Framework.Data.EntityFramework
     {
         protected DbSet<TQueryable> Set { get; }
 
-        public ContextRepository(TContext context) : base(context)
+        private readonly IMapper _mapper;
+
+        public ContextRepository(TContext context, IMapper mapper) : base(context, mapper)
         {
             Set = context.Set<TQueryable>();
+
+            _mapper = mapper;
         }
 
         protected override IQueryable<TQueryable> GetQueryable()
@@ -28,7 +32,7 @@ namespace Smartiks.Framework.Data.EntityFramework
         public virtual async Task<TId> InsertAsync<TModel>(TModel model, CancellationToken cancellationToken)
             where TModel : class
         {
-            var entity = Mapper.Map<TQueryable>(model);
+            var entity = _mapper.Map<TQueryable>(model);
 
             Set.Add(entity);
 
@@ -42,7 +46,7 @@ namespace Smartiks.Framework.Data.EntityFramework
         {
             var entity = await Set.FirstAsync(e => e.Id.Equals(model.Id), cancellationToken);
 
-            Mapper.Map(model, entity);
+            _mapper.Map(model, entity);
 
             await Context.SaveChangesAsync(cancellationToken);
         }

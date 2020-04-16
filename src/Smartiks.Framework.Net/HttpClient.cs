@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Smartiks.Framework.Net.Abstractions;
+using System.Net.Http;
 
 namespace Smartiks.Framework.Net
 {
@@ -13,7 +13,25 @@ namespace Smartiks.Framework.Net
         {
             Options = optionsProvider.Value;
 
-            Timeout = Options.Timeout;
+            if (Options.BaseAddress != null)
+            {
+                BaseAddress = Options.BaseAddress;
+            }
+
+            if (Options.DefaultRequestHeaders?.Count > 0)
+            {
+                DefaultRequestHeaders.Clear();
+
+                foreach (var header in Options.DefaultRequestHeaders)
+                {
+                    DefaultRequestHeaders.Add(header.Key, header.Value);
+                }
+            }
+
+            if (Options.Timeout.HasValue)
+            {
+                Timeout = Options.Timeout.Value;
+            }
         }
     }
 }
