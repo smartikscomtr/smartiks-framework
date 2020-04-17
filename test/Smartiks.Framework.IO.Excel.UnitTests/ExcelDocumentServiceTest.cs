@@ -10,11 +10,11 @@ namespace Smartiks.Framework.IO.Excel.UnitTests
 {
     public class ExcelDocumentServiceTest
     {
-        private readonly ExcelDocumentService excelDocumentService;
+        private readonly ExcelDocumentService _excelDocumentService;
 
         public ExcelDocumentServiceTest()
         {
-            excelDocumentService = new ExcelDocumentService();
+            _excelDocumentService = new ExcelDocumentService();
         }
         
 
@@ -71,7 +71,7 @@ namespace Smartiks.Framework.IO.Excel.UnitTests
         [MemberData(nameof(ReadFromFileData))]
         public async Task ReadFromFile(string filePath, string worksheetName, CultureInfo cultureInfo, ExcelModel[] expectedExcelModels)
         {
-            var excelModels = await excelDocumentService.ReadAsync<ExcelModel>(filePath, worksheetName, cultureInfo);
+            var excelModels = await _excelDocumentService.ReadAsync<ExcelModel>(filePath, worksheetName, cultureInfo);
 
             Assert.Equal(expectedExcelModels, excelModels);
         }
@@ -80,7 +80,7 @@ namespace Smartiks.Framework.IO.Excel.UnitTests
         [MemberData(nameof(WriteToFileData))]
         public async Task WriteToFile(string filePath, string worksheetName, ExcelModel[] excelModels, CultureInfo cultureInfo)
         {
-            await excelDocumentService.WriteAsync(filePath, worksheetName, excelModels, cultureInfo);
+            await _excelDocumentService.WriteAsync(filePath, worksheetName, excelModels, cultureInfo);
         }
     }
 }

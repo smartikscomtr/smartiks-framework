@@ -16,8 +16,6 @@
 
 ### Smartiks.Framework.Data.Web [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Data.Web.svg)](https://www.nuget.org/packages/Smartiks.Framework.Data.Web)
 
-### Smartiks.Framework.Hosting.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Abstractions)
-
 ### Smartiks.Framework.Hosting.Web.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Web.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Web.Abstractions)
 
 ### Smartiks.Framework.Hosting.Web [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Hosting.Web.svg)](https://www.nuget.org/packages/Smartiks.Framework.Hosting.Web)
@@ -48,13 +46,9 @@
 
 ### Smartiks.Framework.Identity.Server.Extensions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Identity.Server.Extensions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Identity.Server.Extensions)
 
-### Smartiks.Framework.Net.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Net.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Net.Abstractions)
-
 ### Smartiks.Framework.Net.Email.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Net.Email.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Net.Email.Abstractions)
 
 ### Smartiks.Framework.Net.Email [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Net.Email.svg)](https://www.nuget.org/packages/Smartiks.Framework.Net.Email)
-
-### Smartiks.Framework.Net [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Net.svg)](https://www.nuget.org/packages/Smartiks.Framework.Net)
 
 ### Smartiks.Framework.Text.Abstractions [![NuGet](https://img.shields.io/nuget/v/Smartiks.Framework.Text.Abstractions.svg)](https://www.nuget.org/packages/Smartiks.Framework.Text.Abstractions)
 

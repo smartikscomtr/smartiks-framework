@@ -28,15 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Identity
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Hosting.Abstractions", "src\Smartiks.Framework.Hosting.Abstractions\Smartiks.Framework.Hosting.Abstractions.csproj", "{F8EA6E27-1AE6-4EA6-9B3B-8EE445FB5593}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Hosting.Web.Abstractions", "src\Smartiks.Framework.Hosting.Web.Abstractions\Smartiks.Framework.Hosting.Web.Abstractions.csproj", "{24AACD76-A6B8-4440-8AB0-98576D4440FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Hosting.Web", "src\Smartiks.Framework.Hosting.Web\Smartiks.Framework.Hosting.Web.csproj", "{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net.Abstractions", "src\Smartiks.Framework.Net.Abstractions\Smartiks.Framework.Net.Abstractions.csproj", "{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Net", "src\Smartiks.Framework.Net\Smartiks.Framework.Net.csproj", "{9804A4AA-62C5-4370-8F85-6C2B68F1B777}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.IO.Xml.Abstractions", "src\Smartiks.Framework.IO.Xml.Abstractions\Smartiks.Framework.IO.Xml.Abstractions.csproj", "{D2F894F0-F34E-40D7-B435-825687DBDE79}"
 EndProject
@@ -75,6 +69,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Web", "src\Smartiks.Framework.Data.Web\Smartiks.Framework.Data.Web.csproj", "{2112519F-2742-4986-A83D-C6FD409CDDA2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.EntityFramework.Abstractions", "src\Smartiks.Framework.Data.EntityFramework.Abstractions\Smartiks.Framework.Data.EntityFramework.Abstractions.csproj", "{7427BED7-40A8-4D06-94B1-70DFEC6B0342}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.App", "examples\Smartiks.Framework.Data.App\Smartiks.Framework.Data.App.csproj", "{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.Text", "Smartiks.Framework.Text\Smartiks.Framework.Text.csproj", "{237D64FB-AE4E-443A-BA78-95DC937A5AAA}"
 EndProject
@@ -120,10 +116,6 @@ Global
 		{7BFAA08A-4C1D-4281-844A-25208077C499}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BFAA08A-4C1D-4281-844A-25208077C499}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BFAA08A-4C1D-4281-844A-25208077C499}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8EA6E27-1AE6-4EA6-9B3B-8EE445FB5593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8EA6E27-1AE6-4EA6-9B3B-8EE445FB5593}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8EA6E27-1AE6-4EA6-9B3B-8EE445FB5593}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8EA6E27-1AE6-4EA6-9B3B-8EE445FB5593}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24AACD76-A6B8-4440-8AB0-98576D4440FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24AACD76-A6B8-4440-8AB0-98576D4440FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24AACD76-A6B8-4440-8AB0-98576D4440FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -132,14 +124,6 @@ Global
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C4A800C-EAB3-4CE5-85CC-3131C0DB1C7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11AD50A5-D88E-4AB8-A5EF-FA3814F60145}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9804A4AA-62C5-4370-8F85-6C2B68F1B777}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F894F0-F34E-40D7-B435-825687DBDE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -212,6 +196,10 @@ Global
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7427BED7-40A8-4D06-94B1-70DFEC6B0342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.Build.0 = Release|Any CPU
 		{237D64FB-AE4E-443A-BA78-95DC937A5AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{237D64FB-AE4E-443A-BA78-95DC937A5AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{237D64FB-AE4E-443A-BA78-95DC937A5AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -225,6 +213,7 @@ Global
 		{8A0A15BE-A3B3-443D-8D33-1A36847BD25A} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
 		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}

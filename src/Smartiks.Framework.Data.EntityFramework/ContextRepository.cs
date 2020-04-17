@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Smartiks.Framework.Data.Abstractions;
 
@@ -14,6 +14,7 @@ namespace Smartiks.Framework.Data.EntityFramework
         where TId : struct
     {
         protected DbSet<TQueryable> Set { get; }
+
 
         public ContextRepository(TContext context) : base(context)
         {
@@ -28,7 +29,7 @@ namespace Smartiks.Framework.Data.EntityFramework
         public virtual async Task<TId> InsertAsync<TModel>(TModel model, CancellationToken cancellationToken)
             where TModel : class
         {
-            var entity = Mapper.Map<TQueryable>(model);
+            var entity = model.Adapt<TQueryable>();
 
             Set.Add(entity);
 
@@ -42,7 +43,7 @@ namespace Smartiks.Framework.Data.EntityFramework
         {
             var entity = await Set.FirstAsync(e => e.Id.Equals(model.Id), cancellationToken);
 
-            Mapper.Map(model, entity);
+            model.Adapt(entity);
 
             await Context.SaveChangesAsync(cancellationToken);
         }

@@ -13,11 +13,11 @@ namespace Smartiks.Framework.IO.Xml.UnitTests
         private static readonly Encoding UTF8EncodingWithoutBom = new UTF8Encoding(false, true);
 
 
-        private readonly XmlDocumentService xmlDocumentService;
+        private readonly XmlDocumentService _xmlDocumentService;
 
         public XmlDocumentServiceTest()
         {
-            xmlDocumentService = new XmlDocumentService();
+            _xmlDocumentService = new XmlDocumentService();
         }
         
 
@@ -247,7 +247,7 @@ namespace Smartiks.Framework.IO.Xml.UnitTests
         [MemberData(nameof(ReadFromFileData))]
         public async Task ReadFromFile(string filePath, Encoding encoding, XmlModel expectedXmlModel)
         {
-            var xmlModel = await xmlDocumentService.ReadAsync(filePath, encoding, typeof(XmlModel)) as XmlModel;
+            var xmlModel = await _xmlDocumentService.ReadAsync(filePath, encoding, typeof(XmlModel)) as XmlModel;
 
             Assert.Equal(expectedXmlModel, xmlModel);
         }
@@ -256,7 +256,7 @@ namespace Smartiks.Framework.IO.Xml.UnitTests
         [MemberData(nameof(ReadFromStringData))]
         public async Task ReadFromString(string xml, XmlModel expectedXmlModel)
         {
-            var xmlModel = await xmlDocumentService.ReadAsync(xml, typeof(XmlModel)) as XmlModel;
+            var xmlModel = await _xmlDocumentService.ReadAsync(xml, typeof(XmlModel)) as XmlModel;
 
             Assert.Equal(expectedXmlModel, xmlModel);
         }
@@ -265,7 +265,7 @@ namespace Smartiks.Framework.IO.Xml.UnitTests
         [MemberData(nameof(WriteToFileData))]
         public async Task WriteToFile(string filePath, Encoding encoding, XmlModel xmlModel, string expectedFilePath)
         {
-            await xmlDocumentService.WriteAsync(filePath, encoding, xmlModel, typeof(XmlModel));
+            await _xmlDocumentService.WriteAsync(filePath, encoding, xmlModel, typeof(XmlModel));
 
             Assert.Equal(await File.ReadAllBytesAsync(filePath), await File.ReadAllBytesAsync(expectedFilePath));
         }
@@ -274,7 +274,7 @@ namespace Smartiks.Framework.IO.Xml.UnitTests
         [MemberData(nameof(WriteToStringData))]
         public async Task WriteToString(Encoding encoding, XmlModel xmlModel, string expectedXml)
         {
-            var xml = await xmlDocumentService.WriteAsync(encoding, xmlModel, typeof(XmlModel));
+            var xml = await _xmlDocumentService.WriteAsync(encoding, xmlModel, typeof(XmlModel));
 
             Assert.Equal(expectedXml, xml);
         }

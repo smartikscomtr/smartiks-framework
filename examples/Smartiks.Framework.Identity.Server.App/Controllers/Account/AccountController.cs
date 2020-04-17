@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -18,6 +15,9 @@ using Smartiks.Framework.Identity.Data.Abstractions;
 using Smartiks.Framework.Identity.Server.App.Attributes;
 using Smartiks.Framework.Identity.Server.App.Extensions;
 using Smartiks.Framework.Identity.Server.App.Models.Account;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
 {
@@ -30,6 +30,7 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
+        private readonly IEventService _events;
 
         public AccountController(
             UserManager<User<int>> userManager,
@@ -44,6 +45,7 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
+            _events = events;
         }
 
         /// <summary>
@@ -82,14 +84,14 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
                     // if the user cancels, send a result back into IdentityServer as if they 
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
-                    await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
+                    await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
 
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    if (await _clientStore.IsPkceClientAsync(context.ClientId))
+                    if (context.IsNativeClient())
                     {
-                        // if the client is PKCE then we assume it's native, so this change in how to
+                        // The client is native, so this change in how to
                         // return the response is for better UX for the end user.
-                        return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
+                        return this.LoadingPage("Redirect", model.ReturnUrl);
                     }
 
                     return Redirect(model.ReturnUrl);
@@ -101,19 +103,19 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, true);
-
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName, clientId: context?.Client.ClientId));
 
                     if (context != null)
                     {
-                        if (await _clientStore.IsPkceClientAsync(context.ClientId))
+                        if (context.IsNativeClient())
                         {
-                            // if the client is PKCE then we assume it's native, so this change in how to
+                            // The client is native, so this change in how to
                             // return the response is for better UX for the end user.
-                            return View("Redirect", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
+                            return this.LoadingPage("Redirect", model.ReturnUrl);
                         }
 
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
@@ -130,21 +132,20 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
                     {
                         return Redirect("~/");
                     }
-
                     // user might have clicked on a malicious link - should be logged
                     throw new Exception("invalid return URL");
                 }
 
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
 
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
-
             return View(vm);
         }
 
-        
+
         /// <summary>
         /// Show logout page
         /// </summary>
@@ -178,6 +179,9 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
             {
                 // delete local authentication cookie
                 await _signInManager.SignOutAsync();
+
+                // raise the logout event
+                await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
 
             // check if we need to trigger sign-out at an upstream identity provider
@@ -195,48 +199,55 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
             return View("LoggedOut", vm);
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
 
+        /*****************************************/
+        /* helper APIs for the AccountController */
+        /*****************************************/
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-
-            if (context?.IdP != null)
+            if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
-                return new LoginViewModel {
-                    EnableLocalLogin = false,
+                var local = context.IdP == IdentityServer4.IdentityServerConstants.LocalIdentityProvider;
+
+                // this is meant to short circuit the UI and only trigger the one external IdP
+                var vm = new LoginViewModel
+                {
+                    EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
-                    Username = context.LoginHint,
-                    ExternalProviders = new[] { new ExternalProvider { AuthenticationScheme = context.IdP } }
+                    Username = context.LoginHint
                 };
+
+                if (!local)
+                {
+                    vm.ExternalProviders = new[] { new ExternalProvider { AuthenticationScheme = context.IdP } };
+                }
+
+                return vm;
             }
 
             var schemes = await _schemeProvider.GetAllSchemesAsync();
 
-            var providers =
-                schemes
-                    .Where
-                    (
-                        x =>
-                            x.DisplayName != null ||
-                            x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase)
-                    )
-                    .Select
-                    (
-                        x =>
-                            new ExternalProvider {
-                                DisplayName = x.DisplayName,
-                                AuthenticationScheme = x.Name
-                            }
-                    )
-                    .ToList();
+            var providers = schemes
+                .Where(x => x.DisplayName != null ||
+                            (x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
+                )
+                .Select(x => new ExternalProvider
+                {
+                    DisplayName = x.DisplayName ?? x.Name,
+                    AuthenticationScheme = x.Name
+                }).ToList();
 
             var allowLocal = true;
-
-            if (context?.ClientId != null)
+            if (context?.Client.ClientId != null)
             {
-                var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
-
+                var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
@@ -248,7 +259,8 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
                 }
             }
 
-            return new LoginViewModel {
+            return new LoginViewModel
+            {
                 AllowRememberLogin = AccountOptions.AllowRememberLogin,
                 EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
@@ -260,11 +272,8 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
         private async Task<LoginViewModel> BuildLoginViewModelAsync(LoginInputModel model)
         {
             var vm = await BuildLoginViewModelAsync(model.ReturnUrl);
-
             vm.Username = model.Username;
-
             vm.RememberLogin = model.RememberLogin;
-
             return vm;
         }
 
@@ -301,7 +310,7 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
                 PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-                ClientName = logout?.ClientId,
+                ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId
             };

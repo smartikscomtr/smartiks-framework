@@ -7,15 +7,15 @@ namespace Smartiks.Framework.Hosting.Web
 {
     public class ServerHeaderMiddleware
     {
-        private readonly RequestDelegate next;
+        private readonly RequestDelegate _next;
 
-        private readonly ServerHeaderOptions options;
+        private readonly ServerHeaderOptions _options;
 
         public ServerHeaderMiddleware(RequestDelegate next, IOptions<ServerHeaderOptions> optionsProvider)
         {
-            this.next = next;
+            this._next = next;
 
-            options = optionsProvider.Value;
+            _options = optionsProvider.Value;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -24,12 +24,12 @@ namespace Smartiks.Framework.Hosting.Web
 
             response.OnStarting(() => {
 
-                response.Headers.Add("Server", options.Name);
+                response.Headers.Add("Server", _options.Name);
 
                 return Task.CompletedTask;
             });
 
-            await next.Invoke(context);
+            await _next.Invoke(context);
         }
     }
 }
