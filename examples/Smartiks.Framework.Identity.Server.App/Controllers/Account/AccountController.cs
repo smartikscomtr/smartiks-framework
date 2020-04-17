@@ -21,8 +21,8 @@ using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Identity.Server.App.Controllers.Account
 {
-    [SecurityHeaders]
     [AllowAnonymous]
+    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly UserManager<User<int>> _userManager;
