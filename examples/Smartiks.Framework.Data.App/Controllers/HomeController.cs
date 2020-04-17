@@ -4,7 +4,6 @@ using Smartiks.Framework.Data.App.Data;
 using Smartiks.Framework.Data.App.Model;
 using Smartiks.Framework.Data.EntityFramework;
 using Smartiks.Framework.Data.EntityFramework.Web;
-using System.Threading.Tasks;
 
 namespace Smartiks.Framework.Data.App.Controllers
 {
@@ -14,7 +13,6 @@ namespace Smartiks.Framework.Data.App.Controllers
     {
         public HomeController(ContextRepository<DataContext, Employee, Query<Employee>, int> repository) : base(repository)
         {
-
         }
     }
 }

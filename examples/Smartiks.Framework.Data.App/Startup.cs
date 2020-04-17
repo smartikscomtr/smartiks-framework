@@ -1,14 +1,14 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Smartiks.Framework.Data.Abstractions;
 using Smartiks.Framework.Data.App.Data;
-using Smartiks.Framework.Data.App.Model;
 using Smartiks.Framework.Data.EntityFramework;
+using Smartiks.Framework.Data.Web;
 
 namespace Smartiks.Framework.Data.App
 {
@@ -25,7 +25,7 @@ namespace Smartiks.Framework.Data.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(
-                options => options.UseSqlServer("Server=GURKANKESEBIR\\SQLEXPRESS;Database=SMARTIKS_DATA;Integrated Security=True;MultipleActiveResultSets=True;")
+                options => options.UseSqlServer(Configuration.GetConnectionString("DataContext"))
             );
 
             var mapperConfiguration =
@@ -37,9 +37,14 @@ namespace Smartiks.Framework.Data.App
 
             services.AddSingleton(mapper);
 
-            services.AddScoped<ContextRepository<DataContext, Employee, Query<Employee>, int>>();
+            services.AddTransient(typeof(ContextRepository<,,,>));
 
-            services.AddControllers();
+            services
+                .AddMvc(options =>
+                {
+                    options.ModelBinderProviders.Insert(0, new KendoQueryModelBinderProvider());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
