@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>Smartiks.Framework.TaskScheduler.Client.Web.App.Program</StartupObject>
+    <Authors>Ali Gunenc</Authors>
+    <Company>Smartiks</Company>
+    <Product>Smartiks.Framework.TaskScheduler.Client.Web.App</Product>
+    <Description>Smartiks.Framework.TaskScheduler.Client.Web.App</Description>
+    <PackageProjectUrl>https://github.com/smartikscomtr/smartiks-framework</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>3.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smartiks.Framework.Hangfire.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

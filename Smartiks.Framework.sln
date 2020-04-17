@@ -78,6 +78,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.App", "examples\Smartiks.Framework.Data.App\Smartiks.Framework.Data.App.csproj", "{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Server.Extensions", "Smartiks.Framework.Hangfire.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj", "{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Client.Web.App", "Smartiks.Framework.TaskScheduler.Client.Web.App\Smartiks.Framework.TaskScheduler.Client.Web.App.csproj", "{2746B8F7-859E-4F17-A8F6-ECA699C3436E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +220,14 @@ Global
 		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -226,6 +238,7 @@ Global
 		{FE378962-F0BF-43EA-B769-9E9E8B4EDD28} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{2746B8F7-859E-4F17-A8F6-ECA699C3436E} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}
