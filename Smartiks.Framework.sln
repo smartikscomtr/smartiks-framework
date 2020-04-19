@@ -78,9 +78,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.App", "examples\Smartiks.Framework.Data.App\Smartiks.Framework.Data.App.csproj", "{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Server.Extensions", "Smartiks.Framework.Hangfire.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj", "{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Server.Extensions", "src\Smartiks.Framework.TaskScheduler.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj", "{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Client.Web.App", "Smartiks.Framework.TaskScheduler.Client.Web.App\Smartiks.Framework.TaskScheduler.Client.Web.App.csproj", "{2746B8F7-859E-4F17-A8F6-ECA699C3436E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Client.Web.App", "examples\Smartiks.Framework.TaskScheduler.Client.Web.App\Smartiks.Framework.TaskScheduler.Client.Web.App.csproj", "{2746B8F7-859E-4F17-A8F6-ECA699C3436E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
