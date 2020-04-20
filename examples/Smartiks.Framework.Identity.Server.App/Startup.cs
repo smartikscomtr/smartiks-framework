@@ -11,6 +11,7 @@ using Smartiks.Framework.Identity.Data.Abstractions;
 using Smartiks.Framework.Identity.Server.Extensions;
 using System;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Hosting;
 
 namespace Smartiks.Framework.Identity.Server.App
 {
@@ -57,11 +58,11 @@ namespace Smartiks.Framework.Identity.Server.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IApplicationLifetime applicationLifetime, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostApplicationLifetime hostApplicationLifetime, IWebHostEnvironment webHostEnvironment)
         {
-            if (env.IsDevelopment())
+            if (webHostEnvironment.IsDevelopment())
             {
-                applicationLifetime.ApplicationStarted.Register(async () => {
+                hostApplicationLifetime.ApplicationStarted.Register(async () => {
 
                     using (var serviceScope = app.ApplicationServices.CreateScope())
                     {

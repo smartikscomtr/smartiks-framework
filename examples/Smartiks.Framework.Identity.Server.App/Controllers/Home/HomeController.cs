@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Smartiks.Framework.Identity.Server.App.Attributes;
 
 namespace Smartiks.Framework.Identity.Server.App.Controllers.Home
@@ -12,16 +13,16 @@ namespace Smartiks.Framework.Identity.Server.App.Controllers.Home
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(IHostingEnvironment environment)
+        public HomeController(IWebHostEnvironment webHostEnvironment)
         {
-            _environment = environment;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            if (_environment.IsDevelopment())
+            if (_webHostEnvironment.IsDevelopment())
             {
                 return View();
             }

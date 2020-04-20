@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Murat Atay;Mehmet Yasin Akar</Authors>
+    <Authors>Murat Atay, Mehmet Yasin Akar</Authors>
     <Company>Smartiks</Company>
     <Product>Smartiks.Framework.Identity.Authentication.Web.Extensions</Product>
     <Description>Smartiks.Framework.Identity.Authentication.Web.Extensions</Description>

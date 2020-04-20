@@ -9,9 +9,9 @@ namespace Smartiks.Framework.Data.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ContextApiController<DataContext, Employee, Employee, Employee, Employee, Employee, int>
+    public class EmployeeController : ContextApiController<DataContext, Employee, Employee, Employee, Employee, Employee, int>
     {
-        public HomeController(ContextRepository<DataContext, Employee, Query<Employee>, int> repository) : base(repository)
+        public EmployeeController(ContextRepository<DataContext, Employee, Query<Employee>, int> repository) : base(repository)
         {
         }
     }
