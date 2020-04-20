@@ -1,4 +1,4 @@
-﻿# Smartiks Framework [![Build Status](https://ci.appveyor.com/api/projects/status/bp8vqaqp92f7wqan?svg=true)](https://ci.appveyor.com/project/mehyaa/smartiks-framework) [![License](https://img.shields.io/github/license/smartikscomtr/smartiks-framework.svg)](https://github.com/smartikscomtr/smartiks-framework/blob/master/LICENSE)
+﻿# Smartiks Framework [![Build Status](https://ci.appveyor.com/api/projects/status/0j86o01t9mvd4ttd?svg=true)](https://ci.appveyor.com/project/muratmoon/smartiks-framework) [![License](https://img.shields.io/github/license/smartikscomtr/smartiks-framework.svg)](https://github.com/smartikscomtr/smartiks-framework/blob/master/LICENSE)
 
 ## NuGet Packages
 
