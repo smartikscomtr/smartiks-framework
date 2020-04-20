@@ -74,9 +74,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.Data.App", "examples\Smartiks.Framework.Data.App\Smartiks.Framework.Data.App.csproj", "{FC9DA02D-B4A7-4193-9FCB-A687B29DD669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Server.Extensions", "src\Smartiks.Framework.TaskScheduler.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj", "{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.TaskScheduler.Server.Extensions", "src\Smartiks.Framework.TaskScheduler.Server.Extensions\Smartiks.Framework.TaskScheduler.Server.Extensions.csproj", "{2443D5DF-B0E8-437B-8C82-CD256A3CEFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.TaskScheduler.Client.Web.App", "examples\Smartiks.Framework.TaskScheduler.Client.Web.App\Smartiks.Framework.TaskScheduler.Client.Web.App.csproj", "{2746B8F7-859E-4F17-A8F6-ECA699C3436E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smartiks.Framework.TaskScheduler.Client.Web.App", "examples\Smartiks.Framework.TaskScheduler.Client.Web.App\Smartiks.Framework.TaskScheduler.Client.Web.App.csproj", "{2746B8F7-859E-4F17-A8F6-ECA699C3436E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.IO.Abstractions", "src\Smartiks.Framework.IO.Abstractions\Smartiks.Framework.IO.Abstractions.csproj", "{ACEFEEC2-8331-4275-BECE-A02C5AA15F65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartiks.Framework.IO.UnitTests", "test\Smartiks.Framework.IO.UnitTests\Smartiks.Framework.IO.UnitTests.csproj", "{295A58FC-A582-46FD-A9E5-FC6F42A089E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -216,6 +220,14 @@ Global
 		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2746B8F7-859E-4F17-A8F6-ECA699C3436E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEFEEC2-8331-4275-BECE-A02C5AA15F65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEFEEC2-8331-4275-BECE-A02C5AA15F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEFEEC2-8331-4275-BECE-A02C5AA15F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEFEEC2-8331-4275-BECE-A02C5AA15F65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{295A58FC-A582-46FD-A9E5-FC6F42A089E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{295A58FC-A582-46FD-A9E5-FC6F42A089E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{295A58FC-A582-46FD-A9E5-FC6F42A089E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{295A58FC-A582-46FD-A9E5-FC6F42A089E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -227,6 +239,7 @@ Global
 		{B58E4DBC-BDD8-46AE-ADA8-EE482AADF5A2} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{FC9DA02D-B4A7-4193-9FCB-A687B29DD669} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
 		{2746B8F7-859E-4F17-A8F6-ECA699C3436E} = {ABD2AC4C-B72D-46E1-83EF-591C9FDE12D9}
+		{295A58FC-A582-46FD-A9E5-FC6F42A089E0} = {E94061EA-01E0-47AD-A3F1-ECA8B6FF3B33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94818F70-5197-4556-8FC6-34FAB098E74B}

@@ -89,7 +89,7 @@ namespace Smartiks.Framework.IO.Xml.Extensions
             if (encoding == null)
                 throw new ArgumentNullException(nameof(encoding));
 
-            using (var stringWriter = new StringWriter(encoding))
+            using (var stringWriter = new StringWriterWithEncoding(encoding))
             {
                 using (var xmlWriter = XmlWriter.Create(stringWriter))
                 {
